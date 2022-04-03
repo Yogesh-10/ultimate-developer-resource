@@ -189,3 +189,61 @@ Callbacks and Higher Order Functions simplify our code and keep it DRY(Don’t r
 code to work with data
 **Asynchronous JavaScript**: Callbacks are a core aspect of async JavaScript, and are
 under-the-hood of promises, async/await
+
+### HOISTING
+
+It is the process of assigning a variable declaration a default value of undefined during the memory creation phase
+
+Phenomena in JS through which we can access the variables and functions even before they have initialized, without any error.
+
+Variable and class *declarations* are also hoisted, so they too can be referenced before they are declared. Note that doing so can lead to unexpected errors, and is not generally recommended.
+
+```jsx
+getName();
+console.log(x);
+var x = 7;
+function getName(){
+    console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+undefined
+```
+
+```jsx
+getName();
+console.log(x);
+
+function getName(){
+    console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+Error: x is not defined //not defined and "undefined" are totally different
+```
+
+- Not defined: We have not initialized the value for variable anywhere in the entire code and in memory space.
+- Undefined: It is a placeholder that is assigned to a variable by the Javascript Engine until the variable is assigned with some other value.
+
+**Hoisting** is a concept which enables us to extract values of variables and functions even before initializing/assigning value without getting *error*
+
+```jsx
+console.log(getName);
+
+var getName = function () {
+	console.log('Namaste JavaScript');
+};
+
+var getName = () => {
+	console.log('Namaste JavaScript');
+};
+
+output: undefined; //because they behave as variable and not function.
+```
+
+Reason for hoisting:
+
+- The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
+- This is the reason why we are getting these outputs.
