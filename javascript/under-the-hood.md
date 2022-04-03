@@ -49,7 +49,6 @@ function calculateVal(a, b) {
 
 ![image](https://user-images.githubusercontent.com/71348279/161437933-16592655-765a-45c4-ba78-fc90a0861b3b.png)
 
-
 ## Call Stack
 
 JavaScript keeps track of what function is currently running (where’s the thread of execution)
@@ -102,3 +101,91 @@ newOutput:undefined
 To manage all these EC, a call **stack** is created. Every time code is run, the EC is pushed in. So first global EC is pushed. Then multiplyBy2 EC(for output ) is pushed, and then after value returned, is popped. Similarly multiplyBy2 EC(for newOutput) is pushed, and then popped and finally Global is also popped and stack is empty.
 
 ![image](https://user-images.githubusercontent.com/71348279/161437786-42dc345e-a2fb-4f25-9ecf-e61866adfb82.png)
+
+## Callbacks and Higher Order Functions
+
+One of the most misunderstood concepts in JavaScript
+
+- Enables powerful pro-level functions like map, filter, reduce (a core aspect of
+  functional programming)
+- Makes our code more declarative and readable
+
+### **Higher Order Functions**
+
+A programming language is said to have **First-class functions** when functions in that language are treated like any other variable. For example, in such a language, a function can be passed as an argument to other functions, can be returned by another function and can be assigned as a value to a variable.
+
+**Functions in javascript = first class objects**(means function have everything that object have) - in javascript functions are basically objects.
+
+They can co-exist with and can be treated like any other javascript object
+
+1. Assigned to variables and properties of other objects
+2. Passed as arguments into functions
+3. Returned as values from functions
+
+‘Parameters’ (placeholders) mean we don’t need to decide what data to run our
+functionality on until we run the function
+
+- Then provide an actual value (‘argument’) when we run the function
+  Higher order functions follow this same principle.
+- We may not want to decide exactly what some of our functionality is until we
+  run our function
+
+```jsx
+function copyArrayAndManipulate(array, instructions) {
+	const output = [];
+	for (let i = 0; i < array.length; i++) {
+		output.push(instructions(array[i]));
+	}
+	return output;
+}
+
+function multiplyBy2(input) {
+	return input * 2;
+}
+const result = copyArrayAndManipulate([1, 2, 3], multiplyBy2);
+```
+
+**Which is our Higher Order Function?**
+The outer function(copyArrayAndManipulate) that takes in a function is our higher-order function
+
+**Which is our Callback Function?**
+The function we insert(pass as an argument) is our callback function
+
+### Callback Function
+
+A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.
+
+```jsx
+function sumCallback(a, b, callback) {
+	callback(a + b);
+}
+
+function handleSum(sum) {
+	console.log(sum);
+}
+
+sumCallback(1, 2, handleSum); // output - 3
+```
+
+Callback function is nothing but, a function is called only when a particular event is happening. In our example, a callback function(handleSum) is passed into sumCallback function, so its the responsibility of sumCallback function to call the handleSum method at any point inside that function(it is not necessary to be called immediately). It can be called even after 10 lines inside sumCallback function. So, it is basically calling back the function when required, thus the name callback function.
+
+we can also pass a anonymous callback function(a function without a name)
+
+```jsx
+function sumCallback(a, b, callback) {
+	callback(a + b);
+}
+
+sumCallback(1, 2, function (sum) {
+	console.log(sum);
+}); //3
+```
+
+**Callback and higher order functions uses:**
+
+Callbacks and Higher Order Functions simplify our code and keep it DRY(Don’t repeat yourself)
+
+**Declarative readable code**: Map, filter, reduce - the most readable way to write
+code to work with data
+**Asynchronous JavaScript**: Callbacks are a core aspect of async JavaScript, and are
+under-the-hood of promises, async/await
