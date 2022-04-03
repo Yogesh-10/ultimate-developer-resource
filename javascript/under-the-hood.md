@@ -1,4 +1,4 @@
-### JAVASCRIPT UNDER THE HOOD - (PRINCIPLES, CALLBACKS & HIGHER ORDER FUNCTIONS, CLOSURE, CLASS AND PROTOTYPE - OOP)
+### JAVASCRIPT UNDER THE HOOD
 
 ### JavaScript principles
 
@@ -47,7 +47,8 @@ function calculateVal(a, b) {
 }
 ```
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/98b1460f-bdaf-4dd7-a9e7-a0f9bc2f631e/Untitled.png)
+![image](https://user-images.githubusercontent.com/71348279/161437933-16592655-765a-45c4-ba78-fc90a0861b3b.png)
+
 
 ## Call Stack
 
@@ -100,4 +101,4 @@ newOutput:undefined
 
 To manage all these EC, a call **stack** is created. Every time code is run, the EC is pushed in. So first global EC is pushed. Then multiplyBy2 EC(for output ) is pushed, and then after value returned, is popped. Similarly multiplyBy2 EC(for newOutput) is pushed, and then popped and finally Global is also popped and stack is empty.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3d2186f2-ead6-4557-885f-db016963f6fc/Untitled.png)
+![image](https://user-images.githubusercontent.com/71348279/161437786-42dc345e-a2fb-4f25-9ecf-e61866adfb82.png)
