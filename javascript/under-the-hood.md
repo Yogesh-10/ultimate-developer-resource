@@ -247,3 +247,179 @@ Reason for hoisting:
 
 - The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
 - This is the reason why we are getting these outputs.
+
+### CLOSURES, LEXICAL SCOPING:
+
+Closure is the most misunderstood of JavaScript concepts
+
+- Enables powerful pro-level functions like ‘once’ and ‘memoize’
+- Many JavaScript design patterns including the module pattern use closure
+- Build iterators, handle partial application and maintain state in an
+  asynchronous world
+
+Behavior of a function - Functions get a new memory every run/invocation
+
+```jsx
+function multiplyBy2(inputNumber) {
+	const result = inputNumber * 2;
+	return result;
+}
+const output = multiplyBy2(7);
+const newOutput = multiplyBy2(10);
+```
+
+multiplyBy2 is invoked twice, and both run in different execution contexts and separate from each other.
+
+**Function with memories(closures):**
+
+A **closure** is the combination of a function bundled together (enclosed) with references to its surrounding state (the **lexical environment**). In other words, a closure gives you access to an outer function's scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time.
+
+Functions with memories
+
+- When our functions get called, we create a live store of data (local memory/variable environment/state) for that function’s execution context.
+- When the function finishes executing, its local memory is deleted (except the returned value)
+- But what if our functions could hold on to live data between executions?
+- This would let our function definitions have an associated cache/persistent memory
+- But it all starts with us returning a function from another function
+
+Functions can be returned from another functions in javascript, since function in js are first class citizens
+
+```jsx
+function createFunction() {
+	function multiplyBy2(num) {
+		return num * 2;
+	}
+	return multiplyBy2;
+}
+const generatedFunc = createFunction();
+const result = generatedFunc(3); // 6
+```
+
+Calling a function outside of the function call in which it was defined
+
+```jsx
+function outer() {
+	let counter = 0;
+	function incrementCounter() {
+		counter++;
+	}
+	return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction();
+myNewFunction();
+```
+
+**Lexical Scope -** When a function is defined, it gets a bond to the surrounding Local Memory
+(“Variable Environment”) in which it has been defined
+
+The word *lexical* refers to the fact that lexical scoping uses the location where a variable is declared within the source code to determine where that variable is available. Nested functions have access to variables declared in their outer scope.
+
+- Scope is directly dependent on the lexical environment
+- **Lexical Environment** : local memory + lexical env of its parent
+- Whenever an EC is created, a Lexical environment(LE) is also created and is referenced in the local EC(in memory space)
+
+It comprises of local memory and ‘reference’ (and not ‘copy’) of lexical environment of its parent. For Global Exec. Context, lexical environment points to null.
+
+```jsx
+function a() {
+	c();
+	var b = 10;
+	function c() {
+		console.log(b);
+	}
+}
+a();
+```
+
+Diagram for above code,
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/49191fe6-c6e0-4b5e-a24a-0b35e39a4ff1/Untitled.png)
+
+Whenever a variable is encountered while execution, it is first searched in the local memory space and if not found, it goes to the lexical environment of its parent and perform the same step, until found or reaches global scope.
+
+As seen in above diagram, here first we have global execution context, and we have execution context for a( ) and we have execution context for b( ), for a( ) - lexical environment is it’s local memory + lexical environment of parent i.e, global execution context, and for b( ) → lexical environment is it’s local memory + lexical environment of parent i.e, a( ) + global execution context.
+
+**Closure code explanation**
+
+```jsx
+function outer() {
+	let counter = 0;
+	function incrementCounter() {
+		counter++;
+	}
+	return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction(); //1
+myNewFunction(); //2
+```
+
+when we run this code, outer( ) is called, the local memory of outer has counter and incrementCounter function, and we return incrementCounter function from outer. now the result of calling outer is stored in myNewFunction which is function body of incrementCounter.
+
+Now that, outer has finished execution and removed from callstack. Now we have myNewFunction which is function definition of incrementCounter, so we can invoke it. But when we invoke myNewFunction( ), the function body has counter++, but we don’t have access to counter inside incrementCounter. But javascript stores the function body along with variables in lexical scope of that function, what this means is js stores whole function body of incrementCounter in to myNewFunction, and along with it there is an hidden property [[scope]] which contains variables in lexical environment, in this example - counter. we can’t access the value of counter because it is a hidden property, we can get result of counter only by running the myNewFunction( ).
+
+step 1: when we invoke myNewFunction( ), a brand new execution context is created and when code runs, there is no counter in local memory, so we check it’s parent which is global scope, there we have newFunction variable is in global scope, which has function body along with variables in lexical environment. counter is 0 and now increased to 1.
+
+So newFunction variable is in global scope, which has function body along with variables in lexical environment, so when myNewFunction( ) is invoked again there is no local memory inside execution context of myNewFunction( ) so it looks in global memory where counter is 1, which is increased by 1 and now value of counter is 2
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c7ff0d48-0bf1-4600-9794-c47990712cfa/Untitled.png)
+
+The hidden property [[scope]] we can refer them as ‘backpack’ since they carry extra variables in it’s lexical scope along with function definition
+
+The ‘backpack’ (or ‘closure’) of live data is attached incrementCounter (then to
+myNewFunction) through a hidden property known as [[scope]] which persists
+when the inner function is returned out
+
+The ‘backpack’ -
+
+We return incrementCounter’s code (function definition) out of outer into global and give it a new name - myNewFunction
+
+- We maintain the bond to outer’s live local memory - it gets ‘returned out’ attached on the back of incrementCounter’s function definition.
+- So outer’s local memory is now stored attached to myNewFunction - even though outer’s execution context is long gone
+- When we run myNewFunction in global, it will first look in its own local memory first (as we’d expect), but then in myNewFunction’s ‘backpack’
+
+Technical terms for ‘backpack’
+
+- Closed over ‘Variable Environment’ (C.O.V.E.)
+- Persistent Lexical Scope Referenced Data (P.L.S.R.D.)
+- ‘Backpack’
+- ‘Closure’
+
+Example 2
+
+```jsx
+function outer() {
+	let counter = 0;
+	function incrementCounter() {
+		counter++;
+	}
+	return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction(); //1
+myNewFunction(); //2
+
+//Let’s run outer again
+const anotherFunction = outer();
+anotherFunction(); //1
+anotherFunction(); //2
+```
+
+Both maintain different execution context as outer creates new execution context, which is completely different from myNewFunction and anotherFunction. so we get individual backpack to each function call for outer( )
+
+If we run 'outer' again and store the returned 'incrementCounter' function
+definition in 'anotherFunction', this new incrementCounter function was created in
+a new execution context and therefore has a brand new independent backpack
+
+**Closure Advantages and uses**
+
+Closure gives our functions persistent memories and entirely new toolkit for writing professional code
+
+**Helper functions**: Everyday professional helper functions like ‘once’ and ‘memoize’
+**Iterators and generators**: Which use lexical scoping and closure to achieve the most contemporary patterns for handling data in JavaScript
+**Module pattern**: Preserve state for the life of an application without polluting the global namespace
+**Asynchronous JavaScript**: Callbacks and Promises rely on closure to persist state in an asynchronous environment
