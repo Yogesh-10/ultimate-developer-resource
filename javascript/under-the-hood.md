@@ -335,7 +335,7 @@ a();
 
 Diagram for above code,
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/49191fe6-c6e0-4b5e-a24a-0b35e39a4ff1/Untitled.png)
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/49191fe6-c6e0-4b5e-a24a-0b35e39a4ff1/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220403%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220403T163618Z&X-Amz-Expires=86400&X-Amz-Signature=ec48091fde1928c21769732b8be9beea9698accdef14dd5c4ff81cfdb4d5bddb&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
 Whenever a variable is encountered while execution, it is first searched in the local memory space and if not found, it goes to the lexical environment of its parent and perform the same step, until found or reaches global scope.
 
@@ -365,7 +365,7 @@ step 1: when we invoke myNewFunction( ), a brand new execution context is create
 
 So newFunction variable is in global scope, which has function body along with variables in lexical environment, so when myNewFunction( ) is invoked again there is no local memory inside execution context of myNewFunction( ) so it looks in global memory where counter is 1, which is increased by 1 and now value of counter is 2
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c7ff0d48-0bf1-4600-9794-c47990712cfa/Untitled.png)
+![image](https://user-images.githubusercontent.com/71348279/161438243-01632fb0-e272-4a18-b0f7-92cee66c3a2b.png)
 
 The hidden property [[scope]] we can refer them as ‘backpack’ since they carry extra variables in it’s lexical scope along with function definition
 
