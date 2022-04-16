@@ -66,3 +66,9 @@ console.log(a == b); //true (because they both result in lack of value,
 //so true is defined)
 console.log(a === b); //false
 ```
+
+### **Garbage Collection in JavaScript:**
+
+garbage collection is used to clean up the unused memory in the program. For example, if we declare millions of variable, it will take up a lot of memory and that is very bad, and cause the computer to crash,
+
+so the job of the garbage collector is to check the program once in a while and check for unused memory, for example, if a variable is declared and used, and it is not used or not needed in any other part of the program, garbage collector cleans it up and free’s up the unused memory💥 (all the work is done by JS behind the scenes)
