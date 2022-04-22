@@ -85,3 +85,65 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 ![image](https://user-images.githubusercontent.com/71348279/164771821-298fe1b8-1c74-4e2c-9add-f7112894cd97.png)
 
+### 3. Hoisting in JavaScript (variables & functions)
+
+It is the process of assigning a variable declaration a default value of undefined during the memory creation phase 
+
+Phenomena in JS through which we can access the variables and functions even before they have initialized, without any error.
+
+Variable and class *declarations* are also hoisted, so they too can be referenced before they are declared. Note that doing so can lead to unexpected errors, and is not generally recommended.
+
+```jsx
+getName();     
+console.log(x);
+var x = 7;
+function getName(){
+    console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+undefined
+```
+
+- It should have been an outright error in many other languages, as it is not possible to even access something which is not even created (defined) yet But in JS, We know that in memory creation phase it assigns undefined and puts the content of function to function's memory. And in execution, it then executes whatever is asked. Here, as execution goes line by line and not after compiling, it could only print undefined and nothing else. This phenomenon, is not an error. However, if we remove var x = 7; then it gives error. Uncaught ReferenceError: x is not defined
+- **Hoisting** is a concept which enables us to extract values of variables and functions even before initializing/assigning value without getting error and this is happening due to the 1st phase (memory creation phase) of the Execution Context.
+- So in previous topic, we learnt that execution context gets created in two phase, so even before code execution, memory is created so in case of variable, it will be initialized as undefined while in case of function the whole function code is placed in the memory. Example:
+
+```jsx
+getName();
+console.log(x);
+
+function getName(){
+    console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+Error: x is not defined //not defined and "undefined" are totally different
+```
+
+- Not defined: We have not initialized the value for variable anywhere in the entire code and in memory space.
+- Undefined: It is a placeholder that is assigned to a variable by the Javascript Engine until the variable is assigned with some other value.
+
+**Hoisting** is a concept which enables us to extract values of variables and functions even before initializing/assigning value without getting *error*
+
+```jsx
+console.log(getName)
+
+var getName = function () {
+    console.log("Namaste JavaScript");
+}
+
+var getName = () => { 
+    console.log("Namaste JavaScript");
+}
+
+output: undefined //because they behave as variable and not function.
+```
+
+Reason for hoisting:
+
+- The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
+- This is the reason why we are getting these outputs.
+
