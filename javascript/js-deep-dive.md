@@ -1,4 +1,4 @@
-### 1. Execution Context
+## 1. Execution Context
 
 Created to run the code of a function - has 2 parts 
 
@@ -26,7 +26,7 @@ function calculateVal(a, b){
 
 
 
-### 2. How JS is executed & Call Stack
+## 2. How JS is executed & Call Stack
 
 - **Memory creation phase :** The place where all the variables and functions are stored as (key: value) pairs. For variable(s), key is the variable name itself and value is undefined (even if the variable is initialized). And, for function(s), key is the function name and value is body of the
 code. Memory component is also known as ***`variable environment*.`**
@@ -89,7 +89,7 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 
 
-### 3. Hoisting in JavaScript (variables & functions)
+## 3. Hoisting in JavaScript (variables & functions)
 
 It is the process of assigning a variable declaration a default value of undefined during the memory creation phase 
 
@@ -153,7 +153,7 @@ Reason for hoisting:
 
 
 
-### 4. Functions and Variable Environments
+## 4. Functions and Variable Environments
 
 ```jsx
 var x = 1;
@@ -194,7 +194,7 @@ function b() {
 - Finally GEC is deleted and also removed from call stack. Program ends.
 
 
-### 5. Shortest JS Program, window & this keyword
+## 5. Shortest JS Program, window & this keyword
 
 - The shortest JS program is empty file. Because even then, JS engine does a lot of things. As always, even in this case, it creates the GEC which has memory space and the execution context.
 - JS engine creates something known as '**window**'. It is an object, which is created in the global space. It contains lots of functions and variables. These functions and variables can be accessed from anywhere in the program. JS engine also creates a **this** keyword, which points to the **window object** at the global level. So, in summary, along with GEC, a global object (window) and a this variable are created.
@@ -208,7 +208,7 @@ console.log(this.x); // 10
 console.log(window.x); // 10
 ```
 
-### 6. undefined vs not defined in JS
+## 6. undefined vs not defined in JS
 
 - In first phase (memory allocation) JS assigns each variable a placeholder called **undefined**.
 - **undefined** is when memory is allocated for the variable, but no value is assigned yet.
@@ -227,3 +227,96 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 
 - JS is a **loosely typed / weakly typed** language. It doesn't attach variables to any datatype. We can say *var a = 5*, and then change the value to boolean *a = true* or string *a = 'hello'* later on.
 - **Never** assign *undefined* to a variable manually. Let it happen on it's own accord.
+
+
+## 7. The Scope Chain, Scope & Lexical Environment
+
+**Lexical Scope -**  When a function is defined, it gets a bond to the surrounding Local Memory
+(“Variable Environment”) in which it has been defined
+
+The word *lexical* refers to the fact that lexical scoping uses the location where a variable is declared within the source code to determine where that variable is available. Nested functions have access to variables declared in their outer scope.
+
+- **Scope is directly dependent on the lexical environment**
+- **Lexical Environment** : local memory + lexical env of its parent
+- Whenever an EC is created, a Lexical environment(LE) is also created and is referenced in the local EC(in memory space)
+
+### **scope and scope chain examples**:
+
+```jsx
+// CASE 1
+function a() {
+    console.log(b); // 10
+    // Instead of printing undefined it prints 10, So somehow this a function could access the variable b outside the function scope. 
+}
+var b = 10;
+a();
+```
+
+```jsx
+// CASE 2
+function a() {
+    c();
+    function c() {
+        console.log(b); // 10
+    }
+}
+var b = 10;
+a();
+```
+
+```jsx
+// CASE 3
+function a() {
+    c();
+    function c() {
+        var b = 100;
+        console.log(b); // 100
+    }
+}
+var b = 10;
+a();
+```
+
+```jsx
+// CASE 4
+function a() {
+    var b = 10;
+    c();
+    function c() {
+        console.log(b); // 10
+    }
+}
+a();
+console.log(b); // Error, Not Defined
+```
+
+- Let's try to understand the output in each of the cases above.
+    - In **case 1**: function a is able to access variable b from Global scope.
+    - In **case 2**: 10 is printed. It means that within nested function too, the global scope variable can be accessed.
+    - In **case 3**: 100 is printed meaning local variable of the same name took precedence over a global variable.
+    - In **case 4**: A function can access a global variable, but the global execution context can't access any local variable.
+        
+        ```jsx
+        To summarize the above points in terms of execution context:
+        call_stack = [GEC, a(), c()]
+        Now lets also assign the memory sections of each execution context in call_stack.
+        c() = [[lexical environment pointer pointing to a()]]
+        a() = [b:10, c:{}, [lexical environment pointer pointing to GEC]]
+        GEC =  [a:{},[lexical_environment pointer pointing to null]]
+        ```
+        
+
+Lexical env - comprises of local memory and ‘reference’ (and not ‘copy’) of lexical environment of its parent. For Global Exec. Context, lexical environment points to null.
+
+```jsx
+function a() {
+    c();
+		var b = 10;
+    function c() {
+        console.log(b);
+    }
+}
+a();
+```
+
+![image](https://user-images.githubusercontent.com/71348279/164773041-9afe8916-b28b-4900-ab69-d1bbd24efdb8.png)
