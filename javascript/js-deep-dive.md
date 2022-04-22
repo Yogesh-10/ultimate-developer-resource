@@ -24,6 +24,8 @@ function calculateVal(a, b){
 ```
 ![image](https://user-images.githubusercontent.com/71348279/164771514-dc6245ac-c49a-4bc1-a5de-917df22334cc.png)
 
+
+
 ### 2. How JS is executed & Call Stack
 
 - **Memory creation phase :** The place where all the variables and functions are stored as (key: value) pairs. For variable(s), key is the variable name itself and value is undefined (even if the variable is initialized). And, for function(s), key is the function name and value is body of the
@@ -84,6 +86,8 @@ newOutput:undefined
 To manage all these EC, a call **stack** is created. Every time code is run, the EC is pushed in. So first global EC is pushed. Then multiplyBy2 EC(for output ) is pushed, and then after value returned, is popped. Similarly multiplyBy2 EC(for newOutput) is pushed, and then popped and finally Global is also popped and stack is empty.
 
 ![image](https://user-images.githubusercontent.com/71348279/164771821-298fe1b8-1c74-4e2c-9add-f7112894cd97.png)
+
+
 
 ### 3. Hoisting in JavaScript (variables & functions)
 
@@ -147,3 +151,44 @@ Reason for hoisting:
 - The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
 - This is the reason why we are getting these outputs.
 
+
+
+### 4. Functions and Variable Environments
+
+```jsx
+var x = 1;
+a();
+b(); // we are calling the functions before defining them. This will work properly, as seen in Hoisting.
+console.log(x);
+
+function a() {
+  var x = 10; // local scope because of separate execution context
+  console.log(x);
+}
+
+function b() {
+  var x = 100;
+  console.log(x);
+}
+```
+
+**Code Flow in terms of Execution Context**
+
+- The Global Execution Context (GEC) is created (the big box with Memory and Code subparts). Also GEC is pushed into Call Stack
+
+> Call Stack : GEC
+> 
+- In first phase of GEC (memory phase), variable x:undefined and a and b have their entire function code as value initialized
+- In second phase of GEC (execution phase), when the function is called, a new local Execution Context is created. After x = 1 assigned to GEC x, a() is called. So local EC for a is made inside code part of GEC.
+
+> Call Stack: [GEC, a()]
+> 
+- For local EC, a totally different x variable assigned undefined(x inside a()) in phase 1 , and in phase 2 it is assigned 10 and printed in console log. After printing, no more commands to run, so a() local EC is removed from both GEC and from Call stack
+
+> Call Stack: GEC
+> 
+- Cursor goes back to b() function call. Same steps repeat.
+
+> Call Stack :[GEC, b()] -> GEC (after printing yet another totally different x value as 100 in console log)
+> 
+- Finally GEC is deleted and also removed from call stack. Program ends.
