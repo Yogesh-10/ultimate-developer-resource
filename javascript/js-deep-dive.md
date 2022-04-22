@@ -192,3 +192,38 @@ function b() {
 > Call Stack :[GEC, b()] -> GEC (after printing yet another totally different x value as 100 in console log)
 > 
 - Finally GEC is deleted and also removed from call stack. Program ends.
+
+
+### 5. Shortest JS Program, window & this keyword
+
+- The shortest JS program is empty file. Because even then, JS engine does a lot of things. As always, even in this case, it creates the GEC which has memory space and the execution context.
+- JS engine creates something known as '**window**'. It is an object, which is created in the global space. It contains lots of functions and variables. These functions and variables can be accessed from anywhere in the program. JS engine also creates a **this** keyword, which points to the **window object** at the global level. So, in summary, along with GEC, a global object (window) and a this variable are created.
+- In different engines, the name of global object changes. Window in browsers, but in nodeJS it is called something else. At global level, this === window
+- If we create any variable in the global scope, then the variables get attached to the global object.
+
+```jsx
+var x = 10;
+console.log(x); // 10
+console.log(this.x); // 10
+console.log(window.x); // 10
+```
+
+### 6. undefined vs not defined in JS
+
+- In first phase (memory allocation) JS assigns each variable a placeholder called **undefined**.
+- **undefined** is when memory is allocated for the variable, but no value is assigned yet.
+- If an object/variable is not even declared/found in memory allocation phase, and tried to access it then it is **Not defined**
+- Not Defined !== Undefined
+
+> When variable is declared but not assigned value, its current value is undefined. But when the variable itself is not declared but called in code, then it is not defined.
+> 
+
+```jsx
+console.log(x); // undefined
+var x = 25;
+console.log(x); // 25
+console.log(a); // Uncaught ReferenceError: a is not defined
+```
+
+- JS is a **loosely typed / weakly typed** language. It doesn't attach variables to any datatype. We can say *var a = 5*, and then change the value to boolean *a = true* or string *a = 'hello'* later on.
+- **Never** assign *undefined* to a variable manually. Let it happen on it's own accord.
