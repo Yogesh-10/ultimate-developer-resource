@@ -4,13 +4,13 @@ Resource for learning/refreshing/revising concepts on programming languages, too
 
 Topics covered:
 
-HTML
-CSS
-Javascript
-React
-Node
-Express
-MongoDB
-SQL
-Postgres
-GIT
+1.HTML
+2.CSS
+3.Javascript
+4.React
+5.Node
+6.Express
+7.MongoDB
+8.SQL
+9.Postgres
+10.GIT
