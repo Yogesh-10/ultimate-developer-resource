@@ -1,6 +1,6 @@
 ## 1. Execution Context
 
-Created to run the code of a function - has 2 parts 
+Created to run the code of a function - has 2 parts
 
 - Thread of execution
 - Memory(saves data)
@@ -43,7 +43,7 @@ JavaScript keeps track of what function is currently running (where’s the thre
 currently running
 
 > **Call Stack maintains the order of execution of execution contexts**
-> 
+>
 
 Call stack, with Global execution context at the bottom and all the subsequent function invocation or new execution context is pushed to this call stack. Once the execution context is done with the task, it is popped. Well, call stack is also called by names like, Execution context, Program, Machine, Control, Runtime stack
 
@@ -68,9 +68,9 @@ Now first, for this entire code a **Global** execution context is created.
 - For the function name(which is key) it assigns the entire function code as value.
 
 ```jsx
-num:undefined 
+num:undefined
 multiplyBy2: {...function...}
-output:undefined 
+output:undefined
 newOutput:undefined
 ```
 
@@ -91,14 +91,14 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 ## 3. Hoisting in JavaScript (variables & functions)
 
-It is the process of assigning a variable declaration a default value of undefined during the memory creation phase 
+It is the process of assigning a variable declaration a default value of undefined during the memory creation phase
 
 Phenomena in JS through which we can access the variables and functions even before they have initialized, without any error.
 
 Variable and class *declarations* are also hoisted, so they too can be referenced before they are declared. Note that doing so can lead to unexpected errors, and is not generally recommended.
 
 ```jsx
-getName();     
+getName();
 console.log(x);
 var x = 7;
 function getName(){
@@ -139,7 +139,7 @@ var getName = function () {
     console.log("Namaste JavaScript");
 }
 
-var getName = () => { 
+var getName = () => {
     console.log("Namaste JavaScript");
 }
 
@@ -177,20 +177,20 @@ function b() {
 - The Global Execution Context (GEC) is created (the big box with Memory and Code subparts). Also GEC is pushed into Call Stack
 
 > Call Stack : GEC
-> 
+>
 - In first phase of GEC (memory phase), variable x:undefined and a and b have their entire function code as value initialized
 - In second phase of GEC (execution phase), when the function is called, a new local Execution Context is created. After x = 1 assigned to GEC x, a() is called. So local EC for a is made inside code part of GEC.
 
 > Call Stack: [GEC, a()]
-> 
+>
 - For local EC, a totally different x variable assigned undefined(x inside a()) in phase 1 , and in phase 2 it is assigned 10 and printed in console log. After printing, no more commands to run, so a() local EC is removed from both GEC and from Call stack
 
 > Call Stack: GEC
-> 
+>
 - Cursor goes back to b() function call. Same steps repeat.
 
 > Call Stack :[GEC, b()] -> GEC (after printing yet another totally different x value as 100 in console log)
-> 
+>
 - Finally GEC is deleted and also removed from call stack. Program ends.
 
 
@@ -216,7 +216,7 @@ console.log(window.x); // 10
 - Not Defined !== Undefined
 
 > When variable is declared but not assigned value, its current value is undefined. But when the variable itself is not declared but called in code, then it is not defined.
-> 
+>
 
 ```jsx
 console.log(x); // undefined
@@ -246,7 +246,7 @@ The word *lexical* refers to the fact that lexical scoping uses the location w
 // CASE 1
 function a() {
     console.log(b); // 10
-    // Instead of printing undefined it prints 10, So somehow this a function could access the variable b outside the function scope. 
+    // Instead of printing undefined it prints 10, So somehow this a function could access the variable b outside the function scope.
 }
 var b = 10;
 a();
@@ -295,7 +295,7 @@ console.log(b); // Error, Not Defined
     - In **case 2**: 10 is printed. It means that within nested function too, the global scope variable can be accessed.
     - In **case 3**: 100 is printed meaning local variable of the same name took precedence over a global variable.
     - In **case 4**: A function can access a global variable, but the global execution context can't access any local variable.
-        
+
         ```jsx
         To summarize the above points in terms of execution context:
         call_stack = [GEC, a(), c()]
@@ -304,7 +304,7 @@ console.log(b); // Error, Not Defined
         a() = [b:10, c:{}, [lexical environment pointer pointing to GEC]]
         GEC =  [a:{},[lexical_environment pointer pointing to null]]
         ```
-        
+
 
 Lexical env - comprises of local memory and ‘reference’ (and not ‘copy’) of lexical environment of its parent. For Global Exec. Context, lexical environment points to null.
 
@@ -387,13 +387,13 @@ b = 1000; //this gives us TypeError: Assignment to constant variable.
         - This Error signifies that we haven't initialized or assigned value to a const declaration.
     - Uncaught TypeError: Assignment to constant variable
         - This Error signifies that we are reassigning to a const variable.
-        
+
         **Note**: In case of const array or object, if we try to change the value, it is
         perfectly fine/valid. The property of a const object can be change but it
         cannot be change to reference to the new object.
-        
+
         **BEST PRACTICES:**
-        
+
     - Try using const wherever possible.
     - If not, use let, Avoid var.
     - Declare and initialize all variables with let to the top to avoid errors to shrink temporal dead zone window to zero.
