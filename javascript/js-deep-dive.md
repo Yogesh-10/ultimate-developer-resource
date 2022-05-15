@@ -1,4 +1,4 @@
-## 1. Execution Context
+## 1. EXECUTION CONTEXT
 
 Created to run the code of a function - has 2 parts
 
@@ -26,7 +26,7 @@ function calculateVal(a, b){
 
 
 
-## 2. How JS is executed & Call Stack
+## 2. HOW JS IS EXECUTED AND CALL STACK
 
 - **Memory creation phase :** The place where all the variables and functions are stored as (key: value) pairs. For variable(s), key is the variable name itself and value is undefined (even if the variable is initialized). And, for function(s), key is the function name and value is body of the
 code. Memory component is also known as ***`variable environment*.`**
@@ -89,7 +89,7 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 
 
-## 3. Hoisting in JavaScript (variables & functions)
+## 3. HOISTING IN JAVASCRIPT(variables & functions)
 
 It is the process of assigning a variable declaration a default value of undefined during the memory creation phase
 
@@ -153,7 +153,7 @@ Reason for hoisting:
 
 
 
-## 4. Functions and Variable Environments
+## 4. FUNCTIONS AND VARIABLE ENVIRONMENTS
 
 ```jsx
 var x = 1;
@@ -194,7 +194,7 @@ function b() {
 - Finally GEC is deleted and also removed from call stack. Program ends.
 
 
-## 5. Shortest JS Program, window & this keyword
+## 5. SHORTEST JS PROGRAM, WINDOW AND THIS KEYWORD
 
 - The shortest JS program is empty file. Because even then, JS engine does a lot of things. As always, even in this case, it creates the GEC which has memory space and the execution context.
 - JS engine creates something known as '**window**'. It is an object, which is created in the global space. It contains lots of functions and variables. These functions and variables can be accessed from anywhere in the program. JS engine also creates a **this** keyword, which points to the **window object** at the global level. So, in summary, along with GEC, a global object (window) and a this variable are created.
@@ -208,7 +208,7 @@ console.log(this.x); // 10
 console.log(window.x); // 10
 ```
 
-## 6. undefined vs not defined in JS
+## 6. UNDEFINED VS NOTDEFINED IN JS
 
 - In first phase (memory allocation) JS assigns each variable a placeholder called **undefined**.
 - **undefined** is when memory is allocated for the variable, but no value is assigned yet.
@@ -229,7 +229,7 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 - **Never** assign *undefined* to a variable manually. Let it happen on it's own accord.
 
 
-## 7. The Scope Chain, Scope & Lexical Environment
+## 7. THE SCOPE, SCOPE CHAIN AND LEXICAL ENVIRIONMENT
 
 **Lexical Scope -**  When a function is defined, it gets a bond to the surrounding Local Memory
 (“Variable Environment”) in which it has been defined
@@ -325,7 +325,7 @@ Whenever a variable is encountered while execution, it is first searched in the 
 
 As seen in above diagram, here first we have global execution context, and we have execution context for a( ) and we have execution context for b( ), for a( ) - lexical environment is it’s local memory + lexical environment of parent i.e, global execution context, and for b( ) → lexical environment is it’s local memory + lexical environment of parent i.e, a( ) + global execution context.
 
-## 8. let & const in JS, Temporal Dead Zone, Type of Errors
+## 8. LET AND CONST IN JS, TEMPORAL DEAD ZONE, TYPES OF ERRORS
 
 - let & const are hoisted but stored in different memory space than other variables like var. (And hence they cannot be access via window object or this specifier). They cannot be accessed until they’re initialized.
 - Hence, the time from hoisting these variable(s) and initialization is temporal dead zone, and during this we cannot access let & const, in turns throws Reference error.
@@ -397,3 +397,802 @@ b = 1000; //this gives us TypeError: Assignment to constant variable.
     - Try using const wherever possible.
     - If not, use let, Avoid var.
     - Declare and initialize all variables with let to the top to avoid errors to shrink temporal dead zone window to zero.
+
+## 9. BLOCK SCOPE AND SHADOWING IN JS
+
+- Block combines multiple js statement and can be used at places where single line is expected.
+- let & const cannot be accessed outside the block, in which they reside. Hence, they’re called as block scoped, and var to be function scoped.
+
+**What is a block?**
+
+- Block aka *compound statement* is used to group JS statements together into 1 group. We group them within { }
+- The purpose is to group multiple statements at a place where JS expects only 1 statement.
+
+```jsx
+//code example 1
+
+if(true)some statement
+```
+
+But if we want to write more statements to execute after if condition; then:
+
+```jsx
+//code example 2
+
+if(true){
+    statement 1
+    statement 2
+    ...
+}
+```
+
+- The { } block treats all the statements as one statement.
+- The if doesn’t have any curly braces in syntax.
+
+**BLOCK SCOPE**
+
+- What are the variables and functions that can be accessed inside the block.
+
+```jsx
+//code example 3
+
+{
+    var a = 10;
+    let b = 20;
+    const c = 30;
+}
+
+console.log(a);
+console.log(b);
+
+/* Output:
+10
+Uncaught ReferenceError: b is not defined
+*/
+```
+
+- Behind the Scenes:
+    - In the BLOCK SCOPE; we get b and c inside it initialized as *undefined* as a part of hoisting (in a seperate memory space called block)
+    - While, a is stored inside a GLOBAL scope.
+- Thus we say, *let* and *const* are BLOCK SCOPED. They are stored in a separate mem space which is reserved for this block. Also, they can't be accessed outside this block. But var a can be accessed anywhere as it is in global scope.
+- Thus, we can't access them outside the Block.
+
+**What is SHADOWING in JS?**
+
+```jsx
+//code example 4
+
+var a = 100;
+{
+    var a = 10; //same name as global var
+    let b = 20;
+    const c = 30;
+    console.log(a); // 10
+    console.log(b); // 20
+    console.log(c); // 30
+}
+
+console.log(a); // 10 instead of the 100 we were expecting. So block "a" modified val of global "a" as well.
+// In console, only b and c are in block space. a initially is in global space(a = 100), and when a = 10 line is run, a is not created in block space, but replaces 100 with 10 in global space itself.
+```
+
+- If one has same named variable outside the block, the variable inside the block *shadows* the outside variable.
+- So, a is reassigned to 10. Since both refers to same memory space i.e GLOBAL SPACE. **This happens only for var**
+
+**Instead of var let’s use let**
+
+```jsx
+//code example 5
+
+let b = 100;
+{
+    var a = 10;
+    let b = 20;
+    const c = 30;
+    console.log(b);
+}
+
+console.log(b);
+
+/* 
+20 
+100 // this was what we were expecting in this first place. Both b's are in separate spaces (one in Block(20) and one in Script(another arbitrary mem space)(100))
+```
+
+Outputs:
+
+- In the Scope, we have b in two places. The b outside of the block is in *Script* SCOPE (seperate memory space for let and const)
+- The b inside the block is in *Block* scope.
+- Thus, when in Block scope, 20 is printed and 100 when outside.
+- This concept is called "Shadowing".
+- It is also true for *const* declarations.
+
+**Same logic is true even for functions**
+
+```jsx
+const c = 100;
+function x() {
+  const c = 10;
+  console.log(c);
+}
+x();
+console.log(c);
+/*Output:
+10
+100
+*/
+```
+
+**What is Illegal Shadowing?**
+
+```jsx
+// code example 6
+
+let a = 20;
+{
+    var a = 20;
+}
+
+//Uncaught SyntaxError: Identifier 'a' has already been declared
+```
+
+- We cannot shadow let with var. But it is valid to shadow a let using a let.
+- However, we can shadow var with let.
+- All scope rules that work in function are same in arrow functions too.
+- Since var is function scoped, it is not a problem with the code below.
+
+```jsx
+// code example 7
+
+let a = 20;
+function x() {
+    var a = 20;
+}
+```
+
+## 10. CLOSURES:
+
+Closure is the most misunderstood of JavaScript concepts
+
+- Enables powerful pro-level functions like ‘once’ and ‘memoize’
+- Many JavaScript design patterns including the module pattern use closure
+- Build iterators, handle partial application and maintain state in an
+asynchronous world
+
+Behavior of a function - Functions get a new memory every run/invocation
+
+```jsx
+function multiplyBy2 (inputNumber){
+const result = inputNumber*2;
+return result;
+}
+const output = multiplyBy2(7);
+const newOutput = multiplyBy2(10);
+```
+
+multiplyBy2 is invoked twice, and both run in different execution contexts and separate from each other.
+
+**Function with memories(closures):**
+
+A **closure** is the combination of a function bundled together (enclosed) with references to its surrounding state (the **lexical environment**). In other words, a closure gives you access to an outer function's scope from an inner function. In JavaScript, closures are created every time a function is created, at function creation time.
+
+Functions with memories
+
+- When our functions get called, we create a live store of data (local memory/variable environment/state) for that function’s execution context.
+- When the function finishes executing, its local memory is deleted (except the returned value)
+- But what if our functions could hold on to live data between executions?
+- This would let our function definitions have an associated cache/persistent memory
+- But it all starts with us returning a function from another function
+
+Functions can be returned from another functions in javascript, since function in js are first class citizens
+
+```jsx
+function createFunction() {
+ function multiplyBy2 (num){
+ return num*2;
+ }
+ return multiplyBy2;
+}
+const generatedFunc = createFunction();
+const result = generatedFunc(3); // 6
+```
+
+Calling a function outside of the function call in which it was defined
+
+```jsx
+function outer (){
+	 let counter = 0;
+	 function incrementCounter (){ 
+			counter ++; 
+	 }
+	 return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction();
+myNewFunction();
+```
+
+**Lexical Scope -**  When a function is defined, it gets a bond to the surrounding Local Memory
+(“Variable Environment”) in which it has been defined
+
+The word *lexical* refers to the fact that lexical scoping uses the location where a variable is declared within the source code to determine where that variable is available. Nested functions have access to variables declared in their outer scope.
+
+- Scope is directly dependent on the lexical environment
+- **Lexical Environment** : local memory + lexical env of its parent
+- Whenever an EC is created, a Lexical environment(LE) is also created and is referenced in the local EC(in memory space)
+
+It comprises of local memory and ‘reference’ (and not ‘copy’) of lexical environment of its parent. For Global Exec. Context, lexical environment points to null.
+
+```jsx
+function a() {
+    c();
+		var b = 10;
+    function c() {
+        console.log(b);
+    }
+}
+a();
+```
+
+Diagram for above code,
+
+![image](https://user-images.githubusercontent.com/71348279/164924955-9819c912-08db-4d84-aa35-69750e9dc4c3.png)
+
+Whenever a variable is encountered while execution, it is first searched in the local memory space and if not found, it goes to the lexical environment of its parent and perform the same step, until found or reaches global scope.
+
+As seen in above diagram, here first we have global execution context, and we have execution context for a( ) and we have execution context for b( ), for a( ) - lexical environment is it’s local memory + lexical environment of parent i.e, global execution context, and for b( ) → lexical environment is it’s local memory + lexical environment of parent i.e, a( ) + global execution context.
+
+**Closure code explanation**
+
+```jsx
+function outer (){
+	 let counter = 0;
+	 function incrementCounter (){ 
+			counter ++; 
+	 }
+	 return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction(); //1
+myNewFunction(); //2
+
+```
+
+when we run this code, outer( ) is called, the local memory of outer has counter and incrementCounter function, and we return incrementCounter function from outer. now the result of calling outer is stored in myNewFunction which is function body of incrementCounter.
+
+Now that, outer has finished execution and removed from callstack. Now we have myNewFunction which is function definition of incrementCounter, so we can invoke it. But when we invoke myNewFunction( ), the function body has counter++, but we don’t have access to counter inside incrementCounter. But javascript stores the function body along with variables in lexical scope of that function, what this means is js stores whole function body of incrementCounter in to myNewFunction, and along with it there is an hidden property [[scope]] which contains variables in lexical environment, in this example - counter. we can’t access the value of counter because it is a hidden property, we can get result of counter only by running the myNewFunction( ). 
+
+step 1: when we invoke myNewFunction( ), a brand new execution context is created and when code runs, there is no counter in local memory, so we check it’s parent which is global scope, there we have newFunction variable is in global scope, which has function body along with variables in lexical environment. counter is 0 and now increased to 1.
+
+So newFunction variable is in global scope, which has function body along with variables in lexical environment, so when myNewFunction( ) is invoked again there is no local memory inside execution context of myNewFunction( ) so it looks in global memory where counter is 1, which is increased by 1 and now value of counter is 2
+
+![image](https://user-images.githubusercontent.com/71348279/164923614-42309bae-0626-477c-b564-0a8d34a9957e.png)
+
+The hidden property [[scope]] we can refer them as ‘backpack’ since they carry extra variables in it’s lexical scope along with function definition
+
+The ‘backpack’ (or ‘closure’) of live data is attached incrementCounter (then to
+myNewFunction) through a hidden property known as [[scope]] which persists
+when the inner function is returned out
+
+The ‘backpack’ -
+
+We return incrementCounter’s code (function definition) out of outer into global and give it a new name - myNewFunction
+
+- We maintain the bond to outer’s live local memory - it gets ‘returned out’ attached on the back of incrementCounter’s function definition.
+- So outer’s local memory is now stored attached to myNewFunction - even though outer’s execution context is long gone
+- When we run myNewFunction in global, it will first look in its own local memory first (as we’d expect), but then in myNewFunction’s ‘backpack’
+
+Technical terms for ‘backpack’
+
+- Closed over ‘Variable Environment’ (C.O.V.E.)
+- Persistent Lexical Scope Referenced Data (P.L.S.R.D.)
+- ‘Backpack’
+- ‘Closure’
+
+Example 2
+
+```jsx
+function outer (){
+ let counter = 0;
+ function incrementCounter (){
+	 counter ++;
+ }
+ return incrementCounter;
+}
+
+const myNewFunction = outer();
+myNewFunction(); //1
+myNewFunction(); //2
+
+//Let’s run outer again
+const anotherFunction = outer();
+anotherFunction(); //1
+anotherFunction(); //2
+```
+
+Both maintain different execution context as outer creates new execution context, which is completely different from myNewFunction  and anotherFunction. so we get individual backpack to each function call for outer( )
+
+If we run 'outer' again and store the returned 'incrementCounter' function
+definition in 'anotherFunction', this new incrementCounter function was created in
+a new execution context and therefore has a brand new independent backpack
+
+**Closure  use cases**
+
+Closure gives our functions persistent memories and entirely new toolkit for writing professional code
+
+**Helper functions**: Everyday professional helper functions like ‘once’ and ‘memoize’
+**Iterators and generators**: Which use lexical scoping and closure to achieve the most contemporary patterns for handling data in JavaScript
+**Module pattern**: Preserve state for the life of an application without polluting the global namespace
+**Asynchronous JavaScript**: Callbacks and Promises rely on closure to persist state in an asynchronous environment
+
+- **Advantages of Closure:**
+    - Module Design Pattern
+    - Currying
+    - Memoize
+    - Data hiding and encapsulation
+    - setTimeouts etc.
+- **Disadvantages of Closure:**
+    - Over consumption of memory
+    - Memory Leak
+    - Freeze browser
+
+**Garbage Collector**
+It is a program in the browser/JS Engine which is responsible for freeing
+up the memory which are unused.
+
+## 11. CLOSURE INTERVIEW QUESTION + SETTIMEOUT
+
+```jsx
+function x() {
+    var i = 1;
+    setTimeout(function() {
+        console.log(i);
+    }, 3000);
+    console.log("Namaste Javascript");
+}
+x();
+// Output:
+// Namaste Javascript
+// 1 // after waiting 3 seconds
+```
+
+- We expect JS to wait 3 sec, print 1 and then go down and print the string. But JS prints string immediately, waits 3 sec and then prints 1.
+- The function inside setTimeout forms a closure (remembers reference to i). So wherever function goes it carries this ref along with it.
+- setTimeout takes this callback function & attaches timer of 3000ms and stores it. Goes to next line without waiting and prints string.
+- After 3000ms runs out, JS takes function, puts it into call stack and runs it.
+- Q: Print 1 after 1 sec, 2 after 2 sec till 5 : Tricky interview question
+    
+    We assume this has a simple approach as below
+    
+    ```jsx
+    function x() {
+    for(var i = 1; i<=5; i++){
+        setTimeout(function() {
+        console.log(i);
+        }, i*1000);
+        }
+        console.log("Namaste Javascript");
+    }
+    x();
+    // Output:
+    // Namaste Javascript
+    // 6
+    // 6
+    // 6
+    // 6
+    // 6
+    ```
+    
+    - Reason?
+        - This happens because of closures. When setTimeout stores the function somewhere and attaches timer to it, the function remembers its reference to i, **not value of i**. All 5 copies of function point to same reference of i. JS stores these 5 functions, prints string and then comes back to the functions. By then the timer has run fully. And due to looping, the i value became 6. And when the callback fun runs the variable i = 6. So same 6 is printed in each log
+        - To avoid this, we can use **let** instead of **var** as let has Block scope. For each iteration, the i is a new variable altogether(new copy of i). Everytime setTimeout is run, the inside function forms closure with new variable i
+    - But what if interviewer ask us to implement using **var**?
+        
+        ```jsx
+        function x() {
+            for(var i = 1; i<=5; i++){
+            function close(i) {
+                setTimeout(function() {
+                console.log(i);
+                }, i*1000);
+                // put the setT function inside new function close()
+            }
+            close(i); // everytime you call close(i) it creates new copy of i. Only this time, it is with var itself!
+            }
+            console.log("Namaste Javascript");
+        }
+        x();
+        ```
+        
+    
+    ## FAMOUS INTERVIEW QUESTIONs - CLOSURES
+    
+    #### **Q1: What is Closure in Javascript?**
+    
+    **Ans**: A function along with reference to its outer environment together forms a closure. Or in other words, A Closure is a combination of a function and its lexical scope bundled together. eg:
+    
+    ```jsx
+    function outer() {
+        var a = 10;
+        function inner() {
+            console.log(a);
+        } // inner forms a closure with outer
+        return inner;
+    }
+    outer()(); // 10 // over here first `()` will return inner function and then using secong `()` to call inner function
+    ```
+    
+    #### **Q2: Will the below code still forms a closure?**
+    
+    ```jsx
+    function outer() {
+        function inner() {
+            console.log(a);
+        }
+        var a = 10;
+        return inner;
+    }
+    outer()(); // 10
+    ```
+    
+    **Ans**: Yes, because inner function forms a closure with its outer environment so sequence doesn't matter.
+    
+    #### **Q3: Changing var to let, will it make any difference?**
+    
+    ```jsx
+    function outer() {
+        let a = 10;
+        function inner() {
+            console.log(a);
+        }
+        return inner;
+    }
+    outer()(); // 10
+    ```
+    
+    **Ans**: It will still behave the same way.
+    
+    #### **Q4: Will inner function have the access to outer function argument?**
+    
+    ```jsx
+    function outer(str) {
+        let a = 10;
+        function inner() {
+            console.log(a, str);
+        }
+        return inner;
+    }
+    outer("Hello There")(); // 10 "Hello There"
+    ```
+    
+    **Ans**: Inner function will now form closure and will have access to both a and b.
+    
+    #### **Q5: In below code, will inner form closure with outest?**
+    
+    ```jsx
+    function outest() {
+        var c = 20;
+        function outer(str) {
+            let a = 10;
+            function inner() {
+                console.log(a, c, str);
+            }
+            return inner;
+        }
+        return outer;
+    }
+    outest()("Hello There")(); // 10 20 "Hello There"
+    ```
+    
+    **Ans**: Yes, inner will have access to all its outer environment.
+    
+    #### **Q6: Output of below code and explanation?**
+    
+    ```jsx
+    function outest() {
+        var c = 20;
+        function outer(str) {
+            let a = 10;
+            function inner() {
+                console.log(a, c, str);
+            }
+            return inner;
+        }
+        return outer;
+    }
+    let a = 100;
+    outest()("Hello There")(); // 10 20 "Hello There"
+    ```
+    
+    **Ans**: Still the same output, the inner function will have reference to inner a, so conflicting name won't matter here. If it wouldn't have find a inside outer function then it would have went more outer to find a and thus have printed 100. So, it try to resolve variable in scope chain and if a wouldn't have been found it would have given reference error.
+    
+    #### **Q7: Advantage of Closure?**
+    
+    - Module Design Pattern
+    - Currying
+    - Memoize
+    - Data hiding and encapsulation
+    - setTimeouts etc.
+    
+    #### **Q8: Discuss more on Data hiding and encapsulation?**
+    
+    ```jsx
+    // without closures
+    var count = 0;
+    function increment(){
+      count++;
+    }
+    // in the above code, anyone can access count and change it. 
+    
+    ------------------------------------------------------------------
+    
+    // (with closures) -> put everything into a function
+    function counter() {
+      var count = 0;
+      function increment(){
+        count++;
+      }
+    }
+    console.log(count); // this will give referenceError as count can't be accessed. So now we are able to achieve hiding of data
+    
+    ------------------------------------------------------------------
+    
+    //(increment with function using closure) true function
+    function counter() {
+      var count = 0;
+      return function increment(){
+        count++;
+        console.log(count);
+      }
+    }
+    var counter1 = counter(); //counter function has closure with count var. 
+    counter1(); // increments counter
+    
+    var counter2 = counter();
+    counter2(); // here counter2 is whole new copy of counter function and it wont impack the output of counter1
+    
+    *************************
+    
+    // Above code is not good and scalable for say, when you plan to implement decrement counter at a later stage. 
+    // To address this issue, we use *constructors*
+    
+    // Adding decrement counter and refactoring code:
+    function Counter() {
+    //constructor function. Good coding would be to capitalize first letter of constructor function. 
+      var count = 0;
+      this.incrementCounter = function() { //anonymous function
+        count++;
+        console.log(count);
+      }
+       this.decrementCounter = function() {
+        count--;
+        console.log(count);
+      }
+    }
+    
+    var counter1 = new Counter();  // new keyword for constructor fun
+    counter1.incrementCounter();
+    counter1.incrementCounter();
+    counter1.decrementCounter();
+    // returns 1 2 1
+    ```
+    
+    #### **Q9: Disadvantage of closure?**
+    
+    **Ans**: Overconsumption of memory when using closure as every time as those closed over variables are not garbage collected till program expires. So when creating many closures, more memory is accumulated and this can create memory leaks if not handled.
+    
+    **Garbage collector** : Program in JS engine or browser that frees up unused memory. In highlevel languages like C++ or JAVA, garbage collection is left to the programmer, but in JS engine its done implicitly.
+    
+    ```jsx
+    function a() {
+      var x = 0;
+      return function b() {
+        console.log(x);
+      }
+    }
+     
+    var y = a(); // y is a copy of b()
+    y(); 
+     
+     // Once a() is called, its element x should be garbage collected ideally. But fun b has closure over var x. So mem of x can
+    ```
+
+
+## 12. FIRST CLASS FUNCTIONS AND ANONYMOUS FUNCTIONS
+
+**What is Function statement?**
+
+Below way of creating function are function statement.
+
+```jsx
+function a() {
+  console.log("Hello");
+}
+a(); // Hello
+```
+
+**What is Function Expression?**
+
+Assigning a function to a variable. Function acts like a value.
+
+```jsx
+var b = function() {
+  console.log("Hello");
+}
+b();
+```
+
+**Difference between function statement and expression**
+
+The major difference between these two lies in **Hoisting**.
+
+```jsx
+a(); // "Hello A"
+b(); // TypeError
+function a() {
+  console.log("Hello A");
+}
+var b = function() {
+  console.log("Hello B");
+}
+// Why? During mem creation phase a is created in memory and function assigned to a. But b is created like a variable (b:undefined) and until code reaches the function()  part, it is still undefined. So it cannot be called.
+```
+
+**What is Function Declaration? -** Other name for **function statement**.
+
+**What is Anonymous Function? -** A function without a name.
+
+```jsx
+function () {
+
+}// this is going to throw Syntax Error - Function Statement requires function name.
+```
+
+- They don't have their own identity. So an anonymous function without code inside it results in an error.
+- Anonymous functions are used when functions are used as values eg. the code sample for **function expression** above.
+
+**What is Named Function Expression?**
+
+Same as Function Expression but function has a name instead of being anonymous.
+
+```jsx
+var b = function xyz() {
+  console.log("b called");
+}
+b(); // "b called"
+xyz(); // Throws ReferenceError:xyz is not defined.
+// xyz function is not created in global scope. So it can't be called.
+```
+
+**Parameters vs Arguments**
+
+```jsx
+var b = function(param1, param2) { // labels/identifiers are parameters
+  console.log("b called");
+}
+b(arg1, arg2); // arguments - values passed inside function call
+```
+
+**What is First Class Function aka First Class Citizens?**
+
+We can pass functions inside a function as arguments and /or return a function(HOF). These ability are altogether known as First class function. It is programming concept available in some other languages too.
+
+```jsx
+var b = function(param1) {
+  console.log(param1); // prints " f() {} "
+}
+b(function(){});
+
+// Other way of doing the same thing:
+var b = function(param1) {
+  console.log(param1);
+}
+function xyz(){
+}
+b(xyz); // same thing as prev code
+
+// we can return a function from a function:
+var b = function(param1) {
+  return function() {
+  }  
+}
+console.log(b()); //we log the entire fun within b.
+```
+
+## 13. CALLBACK AND EVENT LISTENERS
+
+### **Callback Functions**
+
+- Functions are first class citizens ie. take a function A and pass it to another function B. Here, A is a callback function. So basically I am giving access to function B to call function A. This callback function gives us the access to whole **Asynchronous** world in **Synchronous** world.
+
+```jsx
+setTimeout(function () {
+    console.log("Timer");
+}, 1000) // first argument is callback function and second is timer.
+```
+
+- JS is a synchronous and single threaded language. But due to callbacks, we can do async things in JS.
+
+```jsx
+setTimeout(function () {
+console.log("timer");
+}, 5000);
+
+function x(y) {
+console.log("x");
+y();
+}
+
+x(function y() {
+console.log("y");
+});
+// x y timer
+```
+
+- In the call stack, first x and y are present. After code execution, they go away and stack is empty. Then after 5 seconds (from beginning) anonymous suddenly appear up in stack ie. setTimeout
+- All 3 functions are executed through call stack. If any operation blocks the call stack, its called blocking the main thread.
+- Say if x() takes 30 sec to run, then JS has to wait for it to finish as it has only 1 call stack/1 main thread. Never block main thread.
+- Always use **async** for functions that take time eg. setTimeout, Network calls
+
+```jsx
+// Another Example of callback
+function printStr(str, cb) {
+    setTimeout(() => {
+        console.log(str);
+        cb();
+    }, Math.floor(Math.random() * 100) + 1)
+}
+function printAll() {
+    printStr("A", () => {
+        printStr("B", () => {
+            printStr("C", () => {})
+        })
+    })
+}
+printAll() // A B C // in order
+```
+
+### **Event Listener**
+
+- We will create a button in html and attach event to it.
+
+```jsx
+// index.html
+<button id="clickMe">Click Me!</button>
+
+// in index.js
+document.getElementById("clickMe").addEventListener("click", function xyz(){ //when event click occurs, this callback function (xyz) is called into callstack
+    console.log("Button clicked");
+});
+```
+
+- Lets implement a increment counter button.
+    - Using global variable (not good - as anyone can change it)
+        
+        ```jsx
+        let count = 0;
+        document.getElementById("clickMe").addEventListener("click", function xyz(){ 
+            console.log("Button clicked", ++count);
+        });
+        ```
+        
+    - Use closures for data abstraction
+        
+        ```jsx
+        function attachEventList() {  //creating new function for closure
+            let count = 0;
+            document.getElementById("clickMe").addEventListener("click", function xyz(){
+            console.log("Button clicked", ++count);  //now callback function forms closure with outer scope(count)
+        });
+        }
+        attachEventList();
+        ```
+        
+    
+    **Garbage Collection and removeEventListeners**
+    
+    - Event listeners are heavy as they form closures. So even when call stack is empty, EventListener won't free up memory allocated to *count* as it doesn't know when it may need *count* again.
+    - **So we remove event listeners when we don't need them (garbage collected)**
+    - onClick, onHover, onScroll all in a page can slow it down heavily.
