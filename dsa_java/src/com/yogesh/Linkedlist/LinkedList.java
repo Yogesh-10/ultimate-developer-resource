@@ -83,7 +83,7 @@ public class LinkedList {
     public boolean contains(int item) {
         //we can use the logic in indexOf method. so
         return indexOf(item) != -1; //this means. if indexOf returns 1 then contains is true,
-        //if it returns then contains if false
+        //if it returns -1 then contains is false
     }
 //    we can use the below method if indexOf is not implemented
 //        Node current = first;
