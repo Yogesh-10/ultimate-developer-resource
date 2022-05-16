@@ -113,3 +113,11 @@ O(Log n) - **Narrows down the problems by half** and the time taken is much more
 This is the opposite of logarithmic time complexity which is much slower.
 
 In logarithmic the curve reduces as input grows, but here the curve grows as fast as input grows which makes it very slow.
+
+**Space Complexity**
+
+Space complexity is a measure of how efficient your code is in terms of memory used.
+
+Space complexity analysis happens almost in the same way time complexity analysis happens. Additional space / memory is measured in terms of the largest memory used by the program when it runs. That is to say, if you allocated O(N) memory, and later freed it, that does not make the space complexity of your program O(1).**For space complexity we should look only at additional space relative to size of input**
+
+Space complexity is a parallel concept to time complexity. If we need to create an array of size n, this will require O(n) space. If we create a two-dimensional array of size n*n, this will require O(n2) space.
