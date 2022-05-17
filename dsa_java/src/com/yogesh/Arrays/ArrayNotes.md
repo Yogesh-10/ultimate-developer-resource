@@ -32,10 +32,6 @@ LookUp By Index - O(1)
 
 LookUp By value - O(N) because we have loop over entire array
 
-Insert - O(N) - because we have to iterate over array and increase size if
+Insert - O(N) - because we have to iterate over array and increase size if it gets full and copy the elements to new array
 
-it gets full and copy the elements to new array
-
-Delete -O(N) - Because we have to shift the items to fill the gap by
-
-iterating over array
+Delete -O(N) - Because we have to shift the items to fill the gap by iterating over array
