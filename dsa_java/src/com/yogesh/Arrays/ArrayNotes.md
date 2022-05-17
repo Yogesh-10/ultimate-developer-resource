@@ -19,3 +19,23 @@ Multi dimensional arrays are used to store data in the form of matrices or table
 **Disadvantages of array**
 
 Arrays cannot shrink or grow, Because the memory of arrays is allocated statically. If we had to add new elements in an array we have to create a new array and copy the elements. This is costly and runs in linear time O(N)
+
+**Summary & Time Complexity**
+
+****Arrays are great when we know the exact size of elements to store in them
+
+Arrays are faster when look up by index
+
+Time Complexity:
+
+LookUp By Index - O(1)
+
+LookUp By value - O(N) because we have loop over entire array
+
+Insert - O(N) - because we have to iterate over array and increase size if
+
+it gets full and copy the elements to new array
+
+Delete -O(N) - Because we have to shift the items to fill the gap by
+
+iterating over array
