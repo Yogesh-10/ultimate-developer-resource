@@ -1196,3 +1196,134 @@ document.getElementById("clickMe").addEventListener("click", function xyz(){ //w
     - Event listeners are heavy as they form closures. So even when call stack is empty, EventListener won't free up memory allocated to *count* as it doesn't know when it may need *count* again.
     - **So we remove event listeners when we don't need them (garbage collected)**
     - onClick, onHover, onScroll all in a page can slow it down heavily.
+
+
+## 14. Asynchronous JavaScript & EVENT LOOP 
+
+Browser has JS Engine which has Call Stack which has Global execution context, local execution context etc.
+
+- But browser has many other superpowers (Web APIs) - Local storage space, Timer, place to enter URL, Bluetooth access, Geolocation access and so on.
+- Now JS needs some way to connect the callstack with all these superpowers. This is done using Web APIs.
+
+**WebAPIs**
+
+None of the below are part of Javascript! These are extra superpowers that browser has. Browser gives access to JS callstack to use these WebAPIs
+
+- setTimeout(), DOM APIs, fetch(), localstorage, console (yes, even console.log is not JS!!), location and so many more.
+    - setTimeout() : Timer function
+    - DOM APIs : eg.Document.xxxx ; Used to access HTML DOM tree. (Document Object Manipulation)
+    - fetch() : Used to make connection with external servers eg. Netflix servers etc.
+- We get all these inside call stack through global object ie. window
+    - Use window keyword like : window.setTimeout(), window.localstorage, window.console.log() to log something inside console.
+    - As window is global obj, and all the above functions are present in global object, we don't explicity write window but it is implied.
+
+```jsx
+// First a GEC is created and put inside call stack.
+console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console.
+
+setTimeout(function cb() {  //this calls the setTimeOut web api which gives access to timer feature. It stores the callback cb() in webapi environment and starts timer.
+  console.log("Callback");
+ }, 5000);
+
+console.log("End"); // calls console api and logs in console window. After this GEC pops from call stack.
+
+/* output:
+Start
+End
+Callback */
+```
+
+- First a GEC is created and put inside call stack.
+- console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console.
+- setTimeout(function cb() { //this calls the setTimeout web api which gives access to timer feature. It stores the callback cb() and starts timer. console.log("Callback");}, 5000);
+- console.log("End"); // calls console api and logs in console window. After this GEC pops from call stack.
+- While all this is happening, the timer is constantly ticking. After it becomes 0, the callback cb() has to run.
+- Now we need this cb to go into call stack. Only then will it be executed. For this we need **event loop** and **Callback queue**
+
+****Event Loops and Callback Queue****
+
+How after 5 secs timer is printed in console?
+
+- cb() cannot simply directly go to callstack to be execeuted. It goes through the callback queue when timer expires.
+- Event loop keep checking the callback queue, and see if it has any element to puts it into call stack. It is like a gate keeper.
+- Once call stack is empty, eventloop pushes cb() to callstack to run. Console API is used and log printed
+
+Another example to understand Eventloop & Callback Queue.
+
+```jsx
+console.log("Start"); 
+document. getElementById("btn").addEventListener("click", function cb() { 
+  // cb() registered inside webapi environment and event(click) attached to it. i.e. REGISTERING CALLBACK AND ATTACHING EVENT TO IT. 
+  console.log("Callback");
+});
+console.log("End"); // calls console api and logs in console window. After this GEC get removed from call stack.
+// In above code, even after console prints "Start" and "End" and pops GEC out, the eventListener stays in webapi env(with hope that user may click it some day) until explicitly removed, or the browser is closed.
+```
+
+In above code, even after console prints "Start" and "End" and pops GEC out, **the eventListener stays in webapi env**(with hope that user may click it some day) until explicitly removed, or the browser is closed.****
+
+Event loop has just one job to keep checking callback queue is empty and if found something in callback queue, event loop pushes it to call stack and delete from callback queue.
+
+**Need of callback queue?**
+
+Suppose user clicks button x6 times. So 6 cb() are put inside callback queue. Event loop sees if call stack is empty/has space and whether callback queue is not empty(6 elements here). Elements of callback queue popped off, put in callstack, executed and then popped off from call stack.
+
+**Behavior of fetch (Microtask Queue?)**
+
+Let's observe the code below and try to understand
+
+```jsx
+console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console. 
+setTimeout(function cbT() { 
+  console.log("CB Timeout");
+}, 5000);
+fetch("https://api.netflix.com").then(function cbF() {
+    console.log("CB Netflix");
+}); // take 2 seconds to bring response
+// millions lines of code
+console.log("End"); 
+
+/*Code Explanation:
+* Same steps for everything before fetch() in above code.
+* fetch registers cbF into webapi environment along with existing cbT.
+* cbT is waiting for 5000ms to end so that it can be put inside callback queue. cbF is waiting for data to be returned from Netflix servers gonna take 2 seconds.
+* After this millions of lines of code is running, by the time millions line of code will execute, 5 seconds has finished and now the timer has expired and response from Netflix server is ready.
+* Data back from cbF ready to be executed gets stored into something called a Microtask Queue.
+* Also after expiration of timer, cbT is ready to execute in Callback Queue.
+* Microtask Queue is exactly same as Callback Queue, but it has higher priority. Functions in Microtask Queue are executed earlier than Callback Queue.
+* In console, first Start and End are printed in console. First cbF goes in callstack and "CB Netflix" is printed. cbF popped from callstack. Next cbT is removed from callback Queue, put in Call Stack, "CB Timeout" is printed, and cbT removed from callstack.
+* See below Image for more understanding*/
+```
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask.gif)
+
+Callback Queues are also called as MacroTask Queue or Task Queue
+
+### **What enters the Microtask Queue ?**
+
+- All the callback functions that come through promises go in microtask Queue.
+- **Mutation Observer** : Keeps on checking whether there is mutation in DOM tree or not, and if there, then it executes some callback function.
+- Callback functions that come through promises and mutation observer go inside **Microtask Queue**.
+- All the rest goes inside **Callback Queue aka. Task Queue**.
+- If the task in microtask Queue keeps creating new tasks in the queue, element in callback queue never gets chance to be run. This is called **starvation**
+
+### **Some Important Questions**
+
+1. **When does the event loop actually start ? -** Event loop, as the name suggests, is a single-thread, loop that is *almost infinite*. It's always running and doing its job.
+2. **Are only asynchronous web api callbacks are registered in web api environment? -** YES, the synchronous callback functions like what we pass inside map, filter and reduce aren't registered in the Web API environment. It's just those async callback functions which go through all this.
+3. **Does the web API environment stores only the callback function and pushes the same callback to queue/microtask queue? -** Yes, the callback functions are stored, and a reference is scheduled in the queues. Moreover, in the case of event listeners(for example click handlers), the original callbacks stay in the web API environment forever, that's why it's adviced to explicitly remove the listeners when not in use so that the garbage collector does its job.
+4. **How does it matter if we delay for setTimeout would be 0ms. Then callback will move to queue without any wait ? -** No, there are trust issues with setTimeout() 😅. The callback function needs to wait until the Call Stack is empty. So the 0 ms callback might have to wait for 100ms also if the stack is busy.
+
+**Working of Eventloop, Callback Queue & Microtask Queue**
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask1.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask1.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask2.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask2.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask3.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask3.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask4.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask4.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif)
