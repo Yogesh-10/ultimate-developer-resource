@@ -422,6 +422,11 @@ b = 1000; //this gives us TypeError: Assignment to constant variable.
     - If not, use let, Avoid var.
     - Declare and initialize all variables with let to the top to avoid errors to shrink temporal dead zone window to zero.
 
+<br>
+<br>
+<br>
+
+
 ## 9. BLOCK SCOPE AND SHADOWING IN JS
 
 - Block combines multiple js statement and can be used at places where single line is expected.
@@ -573,6 +578,11 @@ function x() {
     var a = 20;
 }
 ```
+
+<br>
+<br>
+<br>
+
 
 ## 10. CLOSURES:
 
@@ -765,6 +775,11 @@ Closure gives our functions persistent memories and entirely new toolkit for wri
 **Garbage Collector**
 It is a program in the browser/JS Engine which is responsible for freeing
 up the memory which are unused.
+
+<br>
+<br>
+<br>
+
 
 ## 11. CLOSURE INTERVIEW QUESTION + SETTIMEOUT
 
@@ -1023,6 +1038,10 @@ x();
      // Once a() is called, its element x should be garbage collected ideally. But fun b has closure over var x. So mem of x can
     ```
 
+<br>
+<br>
+<br>
+
 
 ## 12. FIRST CLASS FUNCTIONS AND ANONYMOUS FUNCTIONS
 
@@ -1125,6 +1144,11 @@ var b = function(param1) {
 console.log(b()); //we log the entire fun within b.
 ```
 
+<br>
+<br>
+<br>
+
+
 ## 13. CALLBACK AND EVENT LISTENERS
 
 ### **Callback Functions**
@@ -1220,6 +1244,10 @@ document.getElementById("clickMe").addEventListener("click", function xyz(){ //w
     - Event listeners are heavy as they form closures. So even when call stack is empty, EventListener won't free up memory allocated to *count* as it doesn't know when it may need *count* again.
     - **So we remove event listeners when we don't need them (garbage collected)**
     - onClick, onHover, onScroll all in a page can slow it down heavily.
+
+<br>
+<br>
+<br>
 
 
 ## 14. Asynchronous JavaScript & EVENT LOOP 
@@ -1355,7 +1383,12 @@ Callback Queues are also called as MacroTask Queue or Task Queue
 <br>
 <br>
 
-## 14. JS Engine, Google's V8 Architecture
+<br>
+<br>
+<br>
+
+
+## 15. JS Engine, Google's V8 Architecture
 
 - JS runs literally everywhere from smart watch to robots to browsers because of Javascript Runtime Environment (JRE).
 - JRE is like a big container which has everything which are required to run Javascript code.
