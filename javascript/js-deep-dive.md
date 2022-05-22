@@ -23,8 +23,9 @@ function calculateVal(a, b){
 }
 ```
 ![image](https://user-images.githubusercontent.com/71348279/164771514-dc6245ac-c49a-4bc1-a5de-917df22334cc.png)
-
-
+<br>
+<br>
+<br>
 
 ## 2. HOW JS IS EXECUTED AND CALL STACK
 
@@ -87,7 +88,9 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 ![image](https://user-images.githubusercontent.com/71348279/164771821-298fe1b8-1c74-4e2c-9add-f7112894cd97.png)
 
-
+<br>
+<br>
+<br>
 
 ## 3. HOISTING IN JAVASCRIPT(variables & functions)
 
@@ -151,6 +154,9 @@ Reason for hoisting:
 - The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
 - This is the reason why we are getting these outputs.
 
+<br>
+<br>
+<br>
 
 
 ## 4. FUNCTIONS AND VARIABLE ENVIRONMENTS
@@ -193,6 +199,10 @@ function b() {
 >
 - Finally GEC is deleted and also removed from call stack. Program ends.
 
+<br>
+<br>
+<br>
+
 
 ## 5. SHORTEST JS PROGRAM, WINDOW AND THIS KEYWORD
 
@@ -207,6 +217,11 @@ console.log(x); // 10
 console.log(this.x); // 10
 console.log(window.x); // 10
 ```
+
+<br>
+<br>
+<br>
+
 
 ## 6. UNDEFINED VS NOTDEFINED IN JS
 
@@ -227,6 +242,10 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 
 - JS is a **loosely typed / weakly typed** language. It doesn't attach variables to any datatype. We can say *var a = 5*, and then change the value to boolean *a = true* or string *a = 'hello'* later on.
 - **Never** assign *undefined* to a variable manually. Let it happen on it's own accord.
+
+<br>
+<br>
+<br>
 
 
 ## 7. THE SCOPE, SCOPE CHAIN AND LEXICAL ENVIRIONMENT
@@ -324,6 +343,11 @@ a();
 Whenever a variable is encountered while execution, it is first searched in the local memory space and if not found, it goes to the lexical environment of its parent and perform the same step, until found or reaches global scope.
 
 As seen in above diagram, here first we have global execution context, and we have execution context for a( ) and we have execution context for b( ), for a( ) - lexical environment is it’s local memory + lexical environment of parent i.e, global execution context, and for b( ) → lexical environment is it’s local memory + lexical environment of parent i.e, a( ) + global execution context.
+
+<br>
+<br>
+<br>
+
 
 ## 8. LET AND CONST IN JS, TEMPORAL DEAD ZONE, TYPES OF ERRORS
 
