@@ -306,4 +306,16 @@ public class ArrayProblems {
         }
         return res;
     }
+
+    public static int maxSubarraySum(int[] arr){
+        int res = arr[0];
+        int maxEnding = arr[0];
+        for (int i = 1; i < arr.length; i++){
+            //we extend the previous subarray by (arr[i] + maxending), or we start new subarray from arr[i]
+            maxEnding = Math.max(arr[i] + maxEnding, arr[i]);
+            res = Math.max(res, maxEnding);
+        }
+
+        return res;
+    }
 }
