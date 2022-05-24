@@ -318,4 +318,35 @@ public class ArrayProblems {
 
         return res;
     }
+
+    public static int longestEvenOddSubarray(int[]arr){
+        //O(n^2) solution
+//        int res = 1;
+//        for (int i = 0; i < arr.length; i++){
+//            int curr = 1;
+//            for (int j = i + 1; j < arr.length; j++){
+//                if (arr[j] % 2 == 0 && arr[j - 1] % 2 != 0 || arr[j] %2 != 0 && arr[j - 1] % 2 == 0)
+//                    curr++;
+//                else break;
+//            }
+//            res = Math.max(res, curr);
+//        }
+//        return res;
+
+        //O(n) solution - kadane's algorithm
+        int res = 1;
+        int curr = 1;
+        for (int i = 1; i < arr.length; i++){
+            //if it's alternative we extend previous subarray and increase curr
+            if (arr[i] % 2 == 0 && arr[i - 1] % 2 != 0 || arr[i] %2 != 0 && arr[i - 1] % 2 == 0){
+                curr++;
+                res = Math.max(res, curr);
+            }
+            //or else we start new subarray and reset curr to 1
+            else curr = 1;
+        }
+        return res;
+    }
+
+
 }
