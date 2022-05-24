@@ -183,4 +183,127 @@ public class ArrayProblems {
         }
         return res;
     }
+
+    public static void frequencyInSortedArray(int[] arr){
+        int count = 1;
+        for (int i = 0; i < arr.length - 1; i++){
+            if (arr[i] == arr[i + 1])
+                count++;
+            else  {
+                System.out.println(arr[i] + " " + count);
+                count = 1;
+            }
+        }
+        System.out.println(arr[arr.length-1] + " " + count);
+    }
+
+
+    public static int maxProfit(int[] price, int start, int end){
+       //O(n^2) solution, Aux Space - O(n)
+       /* if (end <= start)
+            return 0;
+
+        int profit = 0;
+        for (int i = start; i < end; i++){
+            for (int j = i + 1; j <= end; j++){
+                //we check if price at j is greater than price at i
+                if (price[j] > price[i]){
+                    //if yes we calculate current profit by, taking difference between j and i
+                    //and we recursively call left of i and for right of j, so we check all pairs and get max profit
+                    int currProfit = price[j] - price[i] +
+                            maxProfit(price, start, i - 1) +
+                            maxProfit(price, j + 1, end);
+
+                    //finally we update the max profit
+                    profit = Math.max(profit, currProfit);
+                }
+            }
+        }
+        return profit;
+        */
+
+        //O(n) solution, Aux Space - O(1)
+        int profit = 0;
+        //the idea is simple, we iterate through array, when i is greater than i-1,
+        //we simply subtract (i and i-1) and add it to the profit. this means that
+        //we buy when stock is low and sell when stock is high(we keep on adding as we iterate through the array).
+        for (int i = 1; i < price.length; i++)
+            if (price[i] > price[i - 1])
+                profit += price[i] - price[i - 1];
+
+        return profit;
+    }
+
+    public static int trapRainWater(int[] arr){
+    /*    //O(n^2) solution
+        int res = 0;
+        for (int i = 1; i < arr.length - 1; i++) {
+            //find the left max bar
+            //traverse through left of i and find max height bar on left
+            int lMax = arr[i];
+            for (int j = 0; j < i; j++)
+                lMax = Math.max(lMax, arr[j]);
+
+            //find the right max bar
+            //traverse through right of i and find max height bar on right
+            int rMax = arr[i];
+            for (int j = i + 1; j < arr.length; j++)
+                rMax = Math.max(rMax, arr[j]);
+
+            //Find the min height of bar between, rmax and lmax, and subtract with current i
+            //that gives the amount of water that can be trapped at that point
+            res += (Math.min(lMax, rMax) - arr[i]);
+        }
+        return res;
+*/
+      //O(n) solution, Aux Space - O(n)
+      int res = 0;
+      int n = arr.length;
+      int[] lMax = new int[n];
+      int[] rMax = new int[n];
+
+      //computing lmax and storing it in lmax array
+      lMax[0] = arr[0];
+      for (int i = 1; i < n; i++)
+          lMax[i] = Math.max(lMax[i - 1], arr[i]);
+
+      //computing rmax and storing it in rmax array
+      rMax[n - 1] = arr[n - 1];
+      for (int i = n - 2; i >= 0; i--)
+          rMax[i] = Math.max(rMax[i + 1], arr[i]);
+
+      //finding the amount of water trapped in between rmax and lmax bars
+      for (int i = 1; i < n; i++)
+          res += (Math.min(lMax[i], rMax[i]) - arr[i]);
+
+      return res;
+    }
+
+    public static int maxConsecutiveOnes(int[] arr){
+        //O(n^2) solution
+        /*
+        int res = 0;
+        for (int i = 0; i < arr.length; i++){
+            int curr = 0;
+            for (int j = i; j < arr.length; j++){
+                if (arr[j] == 1) curr++;
+                else break;
+            }
+            res = Math.max(res, curr);
+        }
+        return res;
+*/
+        //O(n) solution
+        int res = 0;
+        int curr = 0;
+        for (int i = 0; i < arr.length; i++){
+            if (arr[i] == 0)
+                curr = 0;
+            else{
+                curr++;
+                res = Math.max(res, curr);
+            }
+        }
+        return res;
+    }
 }
