@@ -23,8 +23,9 @@ function calculateVal(a, b){
 }
 ```
 ![image](https://user-images.githubusercontent.com/71348279/164771514-dc6245ac-c49a-4bc1-a5de-917df22334cc.png)
-
-
+<br>
+<br>
+<br>
 
 ## 2. HOW JS IS EXECUTED AND CALL STACK
 
@@ -87,7 +88,9 @@ To manage all these EC, a call **stack** is created. Every time code is run, t
 
 ![image](https://user-images.githubusercontent.com/71348279/164771821-298fe1b8-1c74-4e2c-9add-f7112894cd97.png)
 
-
+<br>
+<br>
+<br>
 
 ## 3. HOISTING IN JAVASCRIPT(variables & functions)
 
@@ -151,6 +154,9 @@ Reason for hoisting:
 - The answer lies in the Global Execution Context. In the memory phase, the variables will be initialized as *undefined* and functions will get the whole function code in their memory.
 - This is the reason why we are getting these outputs.
 
+<br>
+<br>
+<br>
 
 
 ## 4. FUNCTIONS AND VARIABLE ENVIRONMENTS
@@ -193,6 +199,10 @@ function b() {
 >
 - Finally GEC is deleted and also removed from call stack. Program ends.
 
+<br>
+<br>
+<br>
+
 
 ## 5. SHORTEST JS PROGRAM, WINDOW AND THIS KEYWORD
 
@@ -207,6 +217,11 @@ console.log(x); // 10
 console.log(this.x); // 10
 console.log(window.x); // 10
 ```
+
+<br>
+<br>
+<br>
+
 
 ## 6. UNDEFINED VS NOTDEFINED IN JS
 
@@ -227,6 +242,10 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 
 - JS is a **loosely typed / weakly typed** language. It doesn't attach variables to any datatype. We can say *var a = 5*, and then change the value to boolean *a = true* or string *a = 'hello'* later on.
 - **Never** assign *undefined* to a variable manually. Let it happen on it's own accord.
+
+<br>
+<br>
+<br>
 
 
 ## 7. THE SCOPE, SCOPE CHAIN AND LEXICAL ENVIRIONMENT
@@ -325,6 +344,11 @@ Whenever a variable is encountered while execution, it is first searched in the 
 
 As seen in above diagram, here first we have global execution context, and we have execution context for a( ) and we have execution context for b( ), for a( ) - lexical environment is it’s local memory + lexical environment of parent i.e, global execution context, and for b( ) → lexical environment is it’s local memory + lexical environment of parent i.e, a( ) + global execution context.
 
+<br>
+<br>
+<br>
+
+
 ## 8. LET AND CONST IN JS, TEMPORAL DEAD ZONE, TYPES OF ERRORS
 
 - let & const are hoisted but stored in different memory space than other variables like var. (And hence they cannot be access via window object or this specifier). They cannot be accessed until they’re initialized.
@@ -397,6 +421,11 @@ b = 1000; //this gives us TypeError: Assignment to constant variable.
     - Try using const wherever possible.
     - If not, use let, Avoid var.
     - Declare and initialize all variables with let to the top to avoid errors to shrink temporal dead zone window to zero.
+
+<br>
+<br>
+<br>
+
 
 ## 9. BLOCK SCOPE AND SHADOWING IN JS
 
@@ -549,6 +578,11 @@ function x() {
     var a = 20;
 }
 ```
+
+<br>
+<br>
+<br>
+
 
 ## 10. CLOSURES:
 
@@ -741,6 +775,11 @@ Closure gives our functions persistent memories and entirely new toolkit for wri
 **Garbage Collector**
 It is a program in the browser/JS Engine which is responsible for freeing
 up the memory which are unused.
+
+<br>
+<br>
+<br>
+
 
 ## 11. CLOSURE INTERVIEW QUESTION + SETTIMEOUT
 
@@ -999,6 +1038,10 @@ x();
      // Once a() is called, its element x should be garbage collected ideally. But fun b has closure over var x. So mem of x can
     ```
 
+<br>
+<br>
+<br>
+
 
 ## 12. FIRST CLASS FUNCTIONS AND ANONYMOUS FUNCTIONS
 
@@ -1101,6 +1144,11 @@ var b = function(param1) {
 console.log(b()); //we log the entire fun within b.
 ```
 
+<br>
+<br>
+<br>
+
+
 ## 13. CALLBACK AND EVENT LISTENERS
 
 ### **Callback Functions**
@@ -1196,3 +1244,159 @@ document.getElementById("clickMe").addEventListener("click", function xyz(){ //w
     - Event listeners are heavy as they form closures. So even when call stack is empty, EventListener won't free up memory allocated to *count* as it doesn't know when it may need *count* again.
     - **So we remove event listeners when we don't need them (garbage collected)**
     - onClick, onHover, onScroll all in a page can slow it down heavily.
+
+<br>
+<br>
+<br>
+
+
+## 14. Asynchronous JavaScript & EVENT LOOP 
+
+Browser has JS Engine which has Call Stack which has Global execution context, local execution context etc.
+
+- But browser has many other superpowers (Web APIs) - Local storage space, Timer, place to enter URL, Bluetooth access, Geolocation access and so on.
+- Now JS needs some way to connect the callstack with all these superpowers. This is done using Web APIs.
+
+**WebAPIs**
+
+None of the below are part of Javascript! These are extra superpowers that browser has. Browser gives access to JS callstack to use these WebAPIs
+
+- setTimeout(), DOM APIs, fetch(), localstorage, console (yes, even console.log is not JS!!), location and so many more.
+    - setTimeout() : Timer function
+    - DOM APIs : eg.Document.xxxx ; Used to access HTML DOM tree. (Document Object Manipulation)
+    - fetch() : Used to make connection with external servers eg. Netflix servers etc.
+- We get all these inside call stack through global object ie. window
+    - Use window keyword like : window.setTimeout(), window.localstorage, window.console.log() to log something inside console.
+    - As window is global obj, and all the above functions are present in global object, we don't explicity write window but it is implied.
+
+```jsx
+// First a GEC is created and put inside call stack.
+console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console.
+
+setTimeout(function cb() {  //this calls the setTimeOut web api which gives access to timer feature. It stores the callback cb() in webapi environment and starts timer.
+  console.log("Callback");
+ }, 5000);
+
+console.log("End"); // calls console api and logs in console window. After this GEC pops from call stack.
+
+/* output:
+Start
+End
+Callback */
+```
+
+- First a GEC is created and put inside call stack.
+- console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console.
+- setTimeout(function cb() { //this calls the setTimeout web api which gives access to timer feature. It stores the callback cb() and starts timer. console.log("Callback");}, 5000);
+- console.log("End"); // calls console api and logs in console window. After this GEC pops from call stack.
+- While all this is happening, the timer is constantly ticking. After it becomes 0, the callback cb() has to run.
+- Now we need this cb to go into call stack. Only then will it be executed. For this we need **event loop** and **Callback queue**
+
+****Event Loops and Callback Queue****
+
+How after 5 secs timer is printed in console?
+
+- cb() cannot simply directly go to callstack to be execeuted. It goes through the callback queue when timer expires.
+- Event loop keep checking the callback queue, and see if it has any element to puts it into call stack. It is like a gate keeper.
+- Once call stack is empty, eventloop pushes cb() to callstack to run. Console API is used and log printed
+
+Another example to understand Eventloop & Callback Queue.
+
+```jsx
+console.log("Start"); 
+document. getElementById("btn").addEventListener("click", function cb() { 
+  // cb() registered inside webapi environment and event(click) attached to it. i.e. REGISTERING CALLBACK AND ATTACHING EVENT TO IT. 
+  console.log("Callback");
+});
+console.log("End"); // calls console api and logs in console window. After this GEC get removed from call stack.
+// In above code, even after console prints "Start" and "End" and pops GEC out, the eventListener stays in webapi env(with hope that user may click it some day) until explicitly removed, or the browser is closed.
+```
+
+In above code, even after console prints "Start" and "End" and pops GEC out, **the eventListener stays in webapi env**(with hope that user may click it some day) until explicitly removed, or the browser is closed.****
+
+Event loop has just one job to keep checking callback queue is empty and if found something in callback queue, event loop pushes it to call stack and delete from callback queue.
+
+**Need of callback queue?**
+
+Suppose user clicks button x6 times. So 6 cb() are put inside callback queue. Event loop sees if call stack is empty/has space and whether callback queue is not empty(6 elements here). Elements of callback queue popped off, put in callstack, executed and then popped off from call stack.
+
+**Behavior of fetch (Microtask Queue?)**
+
+Let's observe the code below and try to understand
+
+```jsx
+console.log("Start"); // this calls the console web api (through window) which in turn actually modifies values in console. 
+setTimeout(function cbT() { 
+  console.log("CB Timeout");
+}, 5000);
+fetch("https://api.netflix.com").then(function cbF() {
+    console.log("CB Netflix");
+}); // take 2 seconds to bring response
+// millions lines of code
+console.log("End"); 
+
+/*Code Explanation:
+* Same steps for everything before fetch() in above code.
+* fetch registers cbF into webapi environment along with existing cbT.
+* cbT is waiting for 5000ms to end so that it can be put inside callback queue. cbF is waiting for data to be returned from Netflix servers gonna take 2 seconds.
+* After this millions of lines of code is running, by the time millions line of code will execute, 5 seconds has finished and now the timer has expired and response from Netflix server is ready.
+* Data back from cbF ready to be executed gets stored into something called a Microtask Queue.
+* Also after expiration of timer, cbT is ready to execute in Callback Queue.
+* Microtask Queue is exactly same as Callback Queue, but it has higher priority. Functions in Microtask Queue are executed earlier than Callback Queue.
+* In console, first Start and End are printed in console. First cbF goes in callstack and "CB Netflix" is printed. cbF popped from callstack. Next cbT is removed from callback Queue, put in Call Stack, "CB Timeout" is printed, and cbT removed from callstack.
+* See below Image for more understanding*/
+```
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask.gif)
+
+Callback Queues are also called as MacroTask Queue or Task Queue
+
+### **What enters the Microtask Queue ?**
+
+- All the callback functions that come through promises go in microtask Queue.
+- **Mutation Observer** : Keeps on checking whether there is mutation in DOM tree or not, and if there, then it executes some callback function.
+- Callback functions that come through promises and mutation observer go inside **Microtask Queue**.
+- All the rest goes inside **Callback Queue aka. Task Queue**.
+- If the task in microtask Queue keeps creating new tasks in the queue, element in callback queue never gets chance to be run. This is called **starvation**
+
+### **Some Important Questions**
+
+1. **When does the event loop actually start ? -** Event loop, as the name suggests, is a single-thread, loop that is *almost infinite*. It's always running and doing its job.
+2. **Are only asynchronous web api callbacks are registered in web api environment? -** YES, the synchronous callback functions like what we pass inside map, filter and reduce aren't registered in the Web API environment. It's just those async callback functions which go through all this.
+3. **Does the web API environment stores only the callback function and pushes the same callback to queue/microtask queue? -** Yes, the callback functions are stored, and a reference is scheduled in the queues. Moreover, in the case of event listeners(for example click handlers), the original callbacks stay in the web API environment forever, that's why it's adviced to explicitly remove the listeners when not in use so that the garbage collector does its job.
+4. **How does it matter if we delay for setTimeout would be 0ms. Then callback will move to queue without any wait ? -** No, there are trust issues with setTimeout() 😅. The callback function needs to wait until the Call Stack is empty. So the 0 ms callback might have to wait for 100ms also if the stack is busy.
+
+**Working of Eventloop, Callback Queue & Microtask Queue**
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask1.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask1.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask2.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask2.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask3.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask3.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask4.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask4.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif)
+
+![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif)
+<br>
+<br>
+<br>
+
+<br>
+<br>
+<br>
+
+
+## 15. JS Engine, Google's V8 Architecture
+
+- JS runs literally everywhere from smart watch to robots to browsers because of Javascript Runtime Environment (JRE).
+- JRE is like a big container which has everything which are required to run Javascript code.
+- JRE consists of a JS Engine (❤️ of JRE), set of APIs to connect with outside environment, event loop, Callback queue, Microtask queue etc.
+- Browser can execute javascript code because it has the Javascript Runtime Environment.
+- ECMAScript is a governing body of JS. It has set of rules which are followed by all JS engines like Chakra(Edge), Spidermonkey(Firefox)(first javascript engine created by JS creator himself), v8(Chrome)
+- Javascript Engine is not a machine. Its software written in low level languages (eg. C++) that takes in hi-level code in JS and spits out low level machine code.
+- Code inside Javascript Engine passes through 3 steps : **Parsing**, **Compilation** and **Execution**
+    1. **Parsing** - Code is broken down into tokens. In "let a = 7" -> let, a, =, 7 are all tokens. Also we have a syntax parser that takes code and converts it into an AST (Abstract Syntax Tree) which is a JSON with all key values like type, start, end, body etc (looks like package.json but for a line of code in JS. Kinda unimportant)(Check out astexplorer.net -> converts line of code into AST).
+    2. **Compilation** - JS has something called Just-in-time(JIT) Compilation - uses both interpreter & compiler. Also compilation and execution both go hand in hand. The AST from previous step goes to interpreter which converts hi-level code to byte code and moves to execeution. While interpreting, compiler also works hand in hand to compile and form optimized code during runtime. **Does JavaScript really Compiles?** The answer is a loud **YES**. More info at: [Link 1](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch1.md#whats-in-an-interpretation), [Link 2](https://web.stanford.edu/class/cs98si/slides/overview.html), [Link 3](https://blog.greenroots.info/javascript-interpreted-or-compiled-the-debate-is-over-ckb092cv302mtl6s17t14hq1j). JS used to be only interpreter in old times, but now has both to compile and interpreter code and this make JS a JIT compiled language, its like best of both world.
+    3. **Execution** - Needs 2 components ie. Memory heap(place where all memory is stored) and Call Stack(same call stack from prev episodes). There is also a garbage collector. It uses an algo called **Mark and Sweep**.
