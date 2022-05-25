@@ -348,5 +348,81 @@ public class ArrayProblems {
         return res;
     }
 
+    public static int maximumCircularSubarraySum(int[] arr){
+//        O(n^2) solution
+//        int res = arr[0];
+//        for (int i = 0; i < arr.length; i++) {
+//            int currMax = arr[i];
+//            int currSum = arr[i];
+//            for (int j = 1; j < arr.length; j++){
+//                //when calculate index, so that index comes back to first position in array, after reaching the last
+//                int index = (i + j) % arr.length;
+//                currSum += arr[index];
+//                currMax = Math.max(currMax, currSum);
+//            }
+//            res = Math.max(res, currMax);
+//        }
+//        return res;
 
+        //O(n^2) solution
+        //in this solution we can find maxsubarray sum in circular array by finding min sum value in subarray and subtracting it with total sum of array
+        //we first find the max subarray sum in the array, without checking circular array.(using kadane's algorithm)
+        int maxNormalSubarray = maxSubarraySum(arr);
+
+        //if it's negative then all elements in array is negative, so we return max of normal subarray sum
+        if (maxNormalSubarray < 0)
+            return maxNormalSubarray;
+
+        //we find the total sum of array, and subtract it with min subarray value
+        //instead of writing other function for finding min subarray sum, we can reuse max subarray sum
+        //the trick here is, we invert all the elements of the array and find max subarray sum value, which is a result of
+        //min value of subarray sum
+        int arrSum = 0;
+        for (int i = 0; i < arr.length; i++){
+            arrSum += arr[i];
+            arr[i] = -arr[i];
+        }
+
+        //instead of subtracting we add, because we have inverted and found the max value(which is minvalue), for eg:-6 is value of minsum, but we have inverted and found result as 6, so we add
+        int maxCircularSubarray = arrSum + maxSubarraySum(arr);
+        return Math.max(maxNormalSubarray, maxCircularSubarray);
+    }
+
+    public static int majorityElement(int[] arr){
+//        O(N^2) solution
+//        for (int i = 0; i < arr.length;i++){
+//            int count = 1;
+//            for (int j = i + 1; j < arr.length;j++){
+//                if (arr[i] == arr[j]){
+//                    count++;
+//                }
+//            }
+//            if (count > arr.length/2) return i;
+//        }
+//        return -1;
+
+        //O(n) solution - Moore's voting algorithm
+        int res = 0;
+        int count = 1;
+        //find the candidate, that appears maximum
+        for (int i = 1; i < arr.length; i++){
+            if (arr[res] == arr[i]) count++;
+            else count--;
+
+            if (count == 0) {
+                count = 1;
+                res = i;
+            }
+        }
+
+        //check if the candidate is actually a majority
+        count = 0;
+        for (int i = 0; i < arr.length; i++){
+            if (arr[res] == arr[i])
+                count++;
+        }
+        if (count <= arr.length / 2) res = -1;
+
+        return res;
+    }
 }
