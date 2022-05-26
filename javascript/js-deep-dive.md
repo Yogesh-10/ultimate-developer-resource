@@ -1379,14 +1379,128 @@ Callback Queues are also called as MacroTask Queue or Task Queue
 ![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask5.gif)
 
 ![https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif](https://github.com/alok722/namaste-javascript-notes/raw/master/assets/microtask6.gif)
-<br>
-<br>
-<br>
 
 <br>
-<br>
-<br>
 
+## ASYNCHRONOUS JAVASCRIPT
+
+JavaScript being single threaded means we can only do one thing at a time and the thread of execution moves down from one line to the other.
+
+```jsx
+//A reminder of how JavaScript executes code
+const num = 3;
+function multiplyBy2 (inputNumber){
+const result = inputNumber*2;
+return result;
+}
+const output = multiplyBy2(num);
+const newOutput = multiplyBy2(10);
+```
+
+This happens line by line - synchronous javascript. Below diagram explains normal flow of javascript
+
+![https://github.com/barry-hall/js-hard-parts-v2/raw/master/img/04-synchronous.png](https://github.com/barry-hall/js-hard-parts-v2/raw/master/img/04-synchronous.png)
+
+### **Asynchronicity in JavaScript**
+
+Asynchronicity is the backbone of modern web development in JavaScript yet... 
+
+JavaScript is:
+
+- Single threaded (one command runs at a time)
+- Synchronously executed (each line is run in order the code appears)
+
+So what if we have a task:
+
+- Accessing Twitter's server to get new tweets that takes a long time
+- Code we want to run using those tweets
+
+**Challenge:** We want to wait for the tweets to be stored in tweets so that they're there to run displayTweets on - but no code can run in the meantime.
+
+```jsx
+//Slow function blocks further code running
+const tweets = getTweets("http://twitter.com/will/1")
+// ⛔350ms wait while a request is sent to Twitter HQ
+displayTweets(tweets)
+// more code to run
+console.log("I want to runnnn!")
+```
+
+JavaScript is not enough—We need a new pieces (some of which aren't JavaScript at all)
+
+Our core JS engine has 3 main parts:
+
+- Thread of execution
+- Memory/variable environment
+- Call stack
+
+We need to add some new components:
+
+- Web Browser APIs/Node background APIs
+- Promises
+- Event loop, Callback/Task queue and micro task queue
+
+### **Asynchronous Browser Features**
+
+JavaScript often runs in the browser. The web browser has a whole bunch of extra functionaltiy beyond JS, to name a few:
+
+- Dev tools
+- Web sockets
+- Network functionality
+- Rendering engine
+- HTML Dom
+
+Although we don't find these features in JS, we can interface with them.
+
+Some examples of these interfaces are:
+
+- setTimeout -> Timer
+- document -> HTMLDom
+- xhr/fetch -> Network Requests
+- console -> console
+
+There are other things like "local storage", "indexdb" etc. What's important is to realise that these things aren't features of JavaScript itself.
+
+### **Web API - Async Code Example**
+
+ES5 solution: Introducing ‘callback functions’, and Web Browser APIs
+
+```jsx
+function printHello() { console.log("Hello");}
+setTimeout(printHello, 1000);
+console.log("Me first!");
+
+/* output: 
+Me first
+Hello 
+*/
+```
+
+This is processed / broken down as below:
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/c389e139-c761-432e-892c-7cb64d63d090/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220526%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220526T175257Z&X-Amz-Expires=86400&X-Amz-Signature=950f3e7b636a28bb8a51ef1c5df840b9c91d72cb35d681dd82da6a5af0e94c08&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+### **Callback Queue & Event Loop**
+
+When we use things like `setTimeout` there is another queue in play. This is called the event loop. It is a queue of callbacks.
+
+All code on the call stack has to be completed before anything from the event loop will be put on that stack. If the call stack is empty, it checks the queue and puts anything in there on the call stack. If not it just waits.
+
+![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2a96129b-6d46-4baf-b9af-4c498c90ec42/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220526%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220526T175430Z&X-Amz-Expires=86400&X-Amz-Signature=b88f275b8c629cf4911703a03f4181026d3fb472b7c5999911c5a7e75d56679d&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+**ES5 Web Browser APIs with callback functions**
+
+**Problems**
+
+- Our response data is only available in the callback function - Callback hell
+- Maybe it feels a little odd to think of passing a function into another function only for it
+to run much later
+
+**Benefits**
+
+- Super explicit once you understand how it works under-the-hood
+<br>
+<br>
+<br>
 
 ## 15. JS Engine, Google's V8 Architecture
 
