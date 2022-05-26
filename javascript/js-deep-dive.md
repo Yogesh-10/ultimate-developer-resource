@@ -1502,7 +1502,116 @@ to run much later
 <br>
 <br>
 
-## 15. JS Engine, Google's V8 Architecture
+## 15.Promises - **Introduction**
+
+Promises are a two-pronged 'facade' funtions that both:
+
+- Initiate background web browser work and
+- Return a placeholder object (promise) immediately in JavaScript
+- Special objects built into JavaScript that get returned immediately when we make
+a call to a web browser API/feature (e.g. fetch) that’s set up to return promises
+(not all are)
+- Promises act as a placeholder for the data we expect to get back from the web
+browser feature’s background work
+
+**Promise Example - Fetch and .then**
+
+```jsx
+function display(data) {
+    console.log(data);
+}
+
+const futureData = fetch('http://twitter.com/will/tweets/1');
+futureData.then(display);
+
+console.log("Me first!");
+```
+
+Fetch is a browser feature that is able to talk to the outside world. It also returns a little 'bonus' object that we are able to use in JS.
+
+**How fetch works behind the scenes.**
+
+![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5ff7dbd1-f19e-4c94-b73e-3d4ee8945b88/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220526%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220526T175759Z&X-Amz-Expires=86400&X-Amz-Signature=19c2fbab4153acadbfc74b1f938715908fe08dede969a02ad904451f81a3d2d9&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+- Fetch initiates the network request through the web browser, when the request is completed the value is placed within the "futureData" variables "value" property.****
+- When the promise is complete and the data has been resolved and assigned within the promise object, then you can access it via the `then` method.
+- In the example, the display function is passed into the array of futureData's onFulfilled property to be run when completed.
+- Once the data comes back from twitter, the value is placed in `futureData`'s value property. This in turn triggers the onFulfilled array of functions to run. In this case `display`.
+- ***then* method and functionality to call on completion...**
+    
+    Any code we want to run on the returned data must also be saved on the promise object. Added using `.then` method to the hidden property `onFulfilment`. Promise objects will automatically trigger the attached function to run (with its input being the returned data).
+    
+
+But we need to know how our promise-deferred functionality gets back into JavaScript to be run
+
+**MICROTASK QUEUE**
+
+**Another Example for Web APIs & Promises - fetch and .then** 
+
+```jsx
+function display(data){console.log(data)}
+function printHello(){console.log("Hello");}
+function blockFor300ms(){/* blocks js thread for 300ms */ }
+setTimeout(printHello, 0);
+const futureData = fetch('[https://twitter.com/will/tweets/1](https://twitter.com/will/tweets/1)')
+futureData.then(display)
+blockFor300ms()
+console.log("Me first!");
+
+/*output:
+Me first (after 300ms)
+Hi
+Hello
+*/
+
+```
+
+![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/2b49b859-3bf9-4f2b-ac79-b78bbd8da31d/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220526%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220526T175824Z&X-Amz-Expires=86400&X-Amz-Signature=3b35dc3418cfc065a8bd99bf7cbc6c60028093288f228e4ab86bc699a85c8ff2&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+- The promise object is designed by JS to automatically trigger the functions in the array of `onCompleted` to run with the value of the promise as the input, when the value gets updated (e.g. when resolved the tweets from a twitter api call).
+- When you add a function with `then` this function gets added to the `onCompletion` array. When the value gets updated (e.g. when a network call resolves) the then function is called with the value field passed as the argument.
+- The microtask queue is used when you create promises. This is invoked as part of the promise chain. Any function that is attached to a promise object via the `then` method doesn't go into the callback queue, it goes into the microtask queue. When there is nothing on the callstack the event loop will first check the microtask queue then the callback queue.
+
+### **Promises Review**
+
+Problems:
+
+- 99% of developers have no idea how (Promises) are working under the hood
+- Debugging becomes super-hard as a result
+- Developers fail technical interviews
+
+Benefits:
+
+- Cleaner readable style with pseudo-synchronous style code
+- Nice error handling process
+
+If you want to add a function to the `onRejection` array of a promise object (the array that runs when things fail) then you can do this in a couple of ways.
+
+1. `futureData.catch(someFunction)`
+2. `futureData.then(successFunction, rejectFunction)`
+
+**We have rules for the execution of our asynchronously delayed code**. 
+
+Hold promise-deferred functions in a microtask queue and callback function in a task queue (Callback queue) when the Web Browser Feature (API) finishes.
+
+Add the function to the Call stack (i.e. run the function) when:
+
+- Call stack is empty & all the global code run (Have the Event Loop check this condition)
+
+Prioritize functions in the microtask queue over the Callback queue.
+
+**Promises, Web APIs, the Callback & Microtask Queues and Event loop enable:**
+
+- **Non-blocking applications**: This means we don’t have to wait in the single thread
+and don’t block further code from running
+- **However long it takes**: We cannot predict when our Browser feature’s work will
+finish so we let JS handle automatically running the function on its completion
+- **Web applications**: Asynchronous JavaScript is the backbone of the modern web -
+letting us build fast ‘non-blocking’ applications
+<br>
+<br>
+
+## 16. JS Engine, Google's V8 Architecture
 
 - JS runs literally everywhere from smart watch to robots to browsers because of Javascript Runtime Environment (JRE).
 - JRE is like a big container which has everything which are required to run Javascript code.
