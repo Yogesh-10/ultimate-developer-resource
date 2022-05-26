@@ -425,4 +425,89 @@ public class ArrayProblems {
 
         return res;
     }
+
+    public static boolean equilibriumPoint(int[] arr){
+//        //Using Prefix sum technique - O(n^2) Solution
+//        for (int i = 0; i < arr.length; i++){
+//            int leftSum = 0; int rightSum = 0;
+//            for (int j = 0; j < i; j++)
+//                leftSum += arr[j];
+//
+//            for (int k = i + 1; k < arr.length; k++)
+//                rightSum += arr[k];
+//
+//            if (leftSum == rightSum) return true;
+//        }
+//        return false;
+
+        //Using Prefix sum technique - O(n) solution
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++)
+            sum += arr[i];
+
+        int lSum = 0;
+        for (int i = 0; i < arr.length; i++){
+            //we calculate lSum as we traverse and we ger right sum by,
+            //subtracting sum - arr[i] in each iteration, which will gives us rightSum
+            int rightSum = sum - arr[i];
+            if (lSum == rightSum)
+                return true;
+
+            lSum += arr[i];
+            sum -= arr[i];
+        }
+        return false;
+    }
+
+    public static int mostFreqItem(int[] arr){
+        int res = 1;
+        int maxCount = 1;
+        for (int i = 0; i < arr.length; i++){
+            int count = 1;
+            for (int j = i + 1; j < arr.length; j++)
+                if (arr[i] == arr[j]) count++;
+
+            if (count > maxCount){
+                maxCount = count;
+                res = arr[i];
+            }
+        }
+        return res;
+    }
+
+    public static void commonElementsIn2SortedArrays(int[] arr1, int[] arr2){
+        int i = 0, j = 0;
+        while (i < arr1.length && j < arr2.length){
+            if (arr1[i] < arr2[j])
+                i++;
+            else if (arr1[i] > arr2[j])
+                j++;
+            else {
+                System.out.print(arr1[i] + " ");
+                i++;
+                j++;
+            }
+        }
+    }
+
+    public static boolean isRotation(int[] arr1, int[] arr2){
+        int m = arr1.length; int n = arr2.length;
+        if (n != m) return false;
+
+        int target = arr1[0]; int key = -1;
+        for (int k= 0; k < n; k++){
+            if (arr2[k] == target){
+                key = k;
+                break;
+            }
+        }
+        if (key == -1) return false;
+
+        for (int i = 0; i < m; i++){
+            int index = (key + i) % n; //or use (key % n) and increment key++ in every iteration
+            if (arr1[i] != arr2[index]) return false;
+        }
+
+        return true;
+    }
 }
