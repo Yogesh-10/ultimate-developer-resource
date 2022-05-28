@@ -56,16 +56,18 @@ public class ArrayProblems {
 
     //5. remove duplicates from sorted array
     public static int removeDuplicates(int[] arr) {
-        int size = arr.length;
+        int res = 1;
 
-        for (int i = 0; i < arr.length - 1; i++) {
-            if (arr[i + 1] == arr[i]) {
-                arr[i] = arr[i + 1];
-                size--;
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] != arr[res - 1]) {
+                arr[res] = arr[i];
+                res++;
             }
         }
+        for (int i = arr.length; i < res; i++)
+
         System.out.println(Arrays.toString(arr));
-        return size;
+        return res;
     }
 
     //6. Move zeros to end.
@@ -509,5 +511,78 @@ public class ArrayProblems {
         }
 
         return true;
+    }
+
+    public static void removeEvenItems(int[] arr){
+        int index = 0;
+        int size = arr.length;
+        for (int i = 0; i < arr.length; i++){
+           if (arr[i] % 2 == 1){
+               arr[index] = arr[i];
+               if (i > index) {
+                   arr[i] = 0;
+               }
+               index++;
+           }else{
+               arr[i] = 0;
+               size--;
+           }
+        }
+        for (int i = 0; i < size; i++)
+            System.out.print(arr[i] + " ");
+    }
+
+    public static int[] mergeTwoSortedArrays(int[] arr1, int[] arr2){
+        //Time Complexity : O(n1 + n2)
+        //Auxiliary Space : O(n1 + n2)
+        int i = 0; int j = 0; int index = 0;
+        int[] temp = new int[arr1.length + arr2.length];
+
+        while (i < arr1.length && j < arr2.length){
+            if (arr1[i] > arr2[j]){
+                temp[index++] = arr2[j];
+                j++;
+            }
+            else {
+                temp[index++] = arr1[i];
+                i++;
+            }
+        }
+        while (i < arr1.length) temp[index++] = arr1[i++];
+        while (j < arr2.length) temp[index++] = arr2[j++];
+        return temp;
+    }
+
+    public static int[] findSumAddUpToN(int[] arr, int sum){
+//        O(n^2) solution
+//        int[] res = new int[2];
+//        for (int i = 0; i < arr.length; i++){
+//            for (int j = i + 1; j < arr.length; j++){
+//                if (arr[i] + arr[j] == sum) {
+//                    res[0] = arr[i];
+//                    res[1] = arr[j];
+//                    return result;
+//                }
+//            }
+//        }
+//        return new int[]{};
+
+        //O(n logn) solution - sorting takes O(nlogn) and the algorithm to find two numbers takes O(n) time, the overall time complexity of this code is O(nlogn).
+        Arrays.sort(arr);
+        int[] res = new int[2];
+        int leftPointer = 0;
+        int rightPointer = arr.length - 1;
+        while (leftPointer != rightPointer){
+            if (arr[leftPointer] + arr[rightPointer] == sum){
+                res[0] = arr[leftPointer];
+                res[1] = arr[rightPointer];
+                return res;
+            }
+            else if(arr[leftPointer] + arr[rightPointer] < sum)
+                leftPointer++;
+            else // A[i] + A[j] > sum
+                rightPointer--;
+        }
+        return new int[]{};
     }
 }
