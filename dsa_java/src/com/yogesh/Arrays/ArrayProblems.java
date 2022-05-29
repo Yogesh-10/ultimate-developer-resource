@@ -8,9 +8,9 @@ public class ArrayProblems {
     //I/p: [10, 20, 30, 80], O/P - 3(index of largest element in array)
     //O(n) solution - Efficient solution
     public static int largestElement(int[] arr) {
-        int max = 0;
+        int max = arr[0];
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] > arr[max])
+            if (arr[i] > max)
                 max = i;
         }
         return max;
@@ -95,6 +95,15 @@ public class ArrayProblems {
             arr[i] = temp;
         }
 
+        return arr;
+    }
+
+    public static int[] rightRotate(int[] arr){
+        for (int i = arr.length - 1; i > 0; i--){
+            int temp = arr[i - 1];
+            arr[i - 1] = arr[i];
+            arr[i] = temp;
+        }
         return arr;
     }
 
@@ -584,5 +593,115 @@ public class ArrayProblems {
                 rightPointer--;
         }
         return new int[]{};
+    }
+
+    public static int[] findProduct(int[] arr){
+//        O(n^2) solution
+//        int[] res = new int[arr.length];
+//        int index = 0;
+//        for (int i = 0; i < arr.length; i++){
+//            int prod = 1;
+//            for (int j = 0; j < arr.length; j++){
+//                if (i != j) prod *= arr[j];
+//            }
+//            res[index++] = prod;
+//        }
+//        return res;
+
+        //O(n) solution
+        int n = arr.length;
+        int i, temp = 1;
+
+        // Allocation of result array
+        int[] result = new int[n];
+
+        // Initializing the result array by 1
+        for(int j=0; j < n; j++)
+            result[j] = 1;
+
+        // Product of elements on left side excluding arr[i]
+        for (i = 0; i < n; i++)
+        {
+            result[i] = temp;
+            temp *= arr[i];
+        }
+
+        // Initializing temp to 1 for product on right side
+        temp = 1;
+
+        // Product of elements on right side excluding arr[i]
+        for (i = n - 1; i >= 0; i--)
+        {
+            result[i] *= temp;
+            temp *= arr[i];
+        }
+
+        return result;
+    }
+
+    public static int smallestElement(int[] arr) {
+        int min = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] < min)
+                min = arr[i];
+        }
+        return min;
+    }
+
+    public static int findFirstUnique(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            boolean flag = true;
+            for (int j = 0; j < arr.length; j++) {
+                if (i != j && arr[i] == arr[j]) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) return arr[i];
+        }
+
+        return -1;
+    }
+
+    public static int[] reArrange(int[] arr){
+//        //O(n^2) Solution
+//        for (int i = 0; i < arr.length; i++){
+//           for (int j = i + 1; j < arr.length; j++){
+//               if (arr[i] > arr[j]){
+//                   int temp = arr[j];
+//                   arr[j] = arr[i];
+//                   arr[i] = temp;
+//               }
+//           }
+//        }
+        //O(n) solution
+        //In this solution, we keep two variables i and j. Both of them are 0 initially. i iterates over the array
+        //while j keeps track of the position where next encountered negative number should be placed. When we come
+        //across a negative number, the values at i and j indexes are swapped, and j is incremented. This continues until the end of the array is reached.
+        int j = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < 0) {   // if negative number found
+                if (i != j) {
+                    int temp = arr[i];
+                    arr[i] = arr[j]; // swapping with leftmost positive
+                    arr[j] = temp;
+                }
+                j++;
+            }
+        }
+        return arr;
+    }
+
+    public static int[] maxMinOrder(int[] arr){
+        int[] result = new int[arr.length];
+        int last = arr[(arr.length - 1)/2];
+        int i = 0; int j = arr.length - 1;
+        int index = 0;
+        while (i < j){
+            result[index++] = arr[j--];
+            result[index++] = arr[i++];
+        }
+        result[result.length-1] = last;
+        return result;
     }
 }
