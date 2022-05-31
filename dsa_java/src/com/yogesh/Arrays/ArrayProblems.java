@@ -693,6 +693,7 @@ public class ArrayProblems {
     }
 
     public static int[] maxMinOrder(int[] arr){
+        //O(n^2) solution
         int[] result = new int[arr.length];
         int last = arr[(arr.length - 1)/2];
         int i = 0; int j = arr.length - 1;
