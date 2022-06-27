@@ -6,14 +6,14 @@
 
 #### Topics covered:
 
-#### 1. HTML <br>
-#### 2. CSS <br>
-#### 3. Javascript <br>
-#### 4. React <br>
-#### 5. Node <br>
-#### 6. Express <br>
-#### 7. MongoDB <br>
-#### 8. SQL <br>
-#### 9. Postgres <br>
-#### 10. GIT <br>
-#### 11. [DSA](https://github.com/Yogesh-10/dsa-interview-resource) <br>
+#### 1. [DSA](https://github.com/Yogesh-10/dsa-interview-resource) <br>
+#### 2. HTML <br>
+#### 3. CSS <br>
+#### 4. Javascript <br>
+#### 5. React <br>
+#### 6. Node <br>
+#### 7. Express <br>
+#### 8. MongoDB <br>
+#### 9. SQL <br>
+#### 10. Postgres <br>
+#### 11. GIT <br>
