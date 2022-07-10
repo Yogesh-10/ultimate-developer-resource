@@ -17,3 +17,4 @@
 #### 9. SQL <br>
 #### 10. Postgres <br>
 #### 11. GIT <br>
+#### 12. TypeScript <br>
