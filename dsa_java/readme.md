@@ -4,7 +4,6 @@
 
 [DSA Interview Preparation](https://github.com/Yogesh-10/dsa-interview-resource)
 
-Topics covered till now
-* Arrays & Array Problems
-* Searching Algorithms
-* Sorting Algorithms
+
+i. [Time and Space Complexity](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Time-and-space-complexity)
+<br>
