@@ -16,3 +16,6 @@ iii. [Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/
 
 iv. [Sorting Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SortingAlgorithms)
 <br>
+
+v. [HashTable](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Hashtables)
+<br>
