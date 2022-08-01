@@ -13,3 +13,6 @@ ii. [Arrays & Array Problems](https://github.com/Yogesh-10/dsa-interview-resourc
 
 iii. [Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SearchingAlgorithms)
 <br>
+
+iv. [Sorting Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SortingAlgorithms)
+<br>
