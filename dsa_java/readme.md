@@ -10,3 +10,6 @@ i. [Time and Space Complexity](https://github.com/Yogesh-10/dsa-interview-resour
 
 ii. [Arrays & Array Problems](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Arrays)
 <br>
+
+iii. [Searching Algorithms](https://github.com/Yogesh-10/dsa-interview-resource/tree/main/dsa_java/src/com/yogesh/Algorithms/SearchingAlgorithms)
+<br>
