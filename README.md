@@ -13,6 +13,6 @@
 #### 5. TypeScript <br>
 #### 6. SQL <br>
 #### 7. [Git & Github](https://github.com/Yogesh-10/git-cheat-sheet) <br>
-#### 7. Projects(MERN Projects, Java Backend Projects) <br>
+#### 7. [MERN Projects](https://github.com/Yogesh-10/node-api-projects) <br>
 
 NOTE: All the topics are being added and will be pushed soon to repos
