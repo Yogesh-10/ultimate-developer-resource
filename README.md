@@ -10,7 +10,7 @@
 #### 2. HTML/CSS <br>
 #### 3. [Java - Backend Dev Resource](https://github.com/Yogesh-10/java-backend-dev-resource) (Java, JDBC-JSP-Servlets, Spring, SpringMVC, SpringREST, Spring Security, Spring Boot)<br>
 #### 4. [Javascript - MERN FullStack Dev Resource](https://github.com/Yogesh-10/ultimate-developer-resource/tree/main/javascript) (Javascript, React, Node, Express, MongoDB) <br>
-#### 5. TypeScript <br>
+#### 5. [TypeScript](https://github.com/Yogesh-10/TypeScript-dev-resource) <br>
 #### 6. SQL <br>
 #### 7. [Git & Github](https://github.com/Yogesh-10/git-cheat-sheet) <br>
 #### 7. [MERN Projects](https://github.com/Yogesh-10/node-api-projects) <br>
