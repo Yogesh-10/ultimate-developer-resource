@@ -1,4 +1,4 @@
-# Ultimate Developer Resource - For Reference and Interview Prep
+# Ultimate Developer Resource - Reference and Interview Prep
 
 ### Resource for learning and revising concepts on programming languages, Tools, Frameworks and Libraries and Version Control
 
